@@ -4,6 +4,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { FiUser } from "react-icons/fi";
 import { IoCartOutline } from "react-icons/io5";
+import { MdErrorOutline } from "react-icons/md";
 
 /**
  * TODO:
@@ -17,4 +18,5 @@ export const icons = {
   SEARCH: <IoIosSearch size={28} />,
   USER: <FiUser size={28} />,
   CART: <IoCartOutline size={28} />,
+  ERROR: <MdErrorOutline />,
 };

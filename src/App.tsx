@@ -2,6 +2,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import { HomePage } from "./pages/HomePage";
 import Layout from "./components/Layout";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
@@ -10,8 +11,16 @@ function App() {
         <Route
           path="/"
           element={
-            <Layout title="Home">
+            <Layout>
               <HomePage />
+            </Layout>
+          }
+        />
+          <Route
+          path="/error"
+          element={
+            <Layout>
+              <ErrorPage />
             </Layout>
           }
         />

@@ -5,10 +5,10 @@ import Footer from "./Footer";
 
 interface LayoutProps {
   children: ReactNode;
-  title: string;
+  // title: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, title }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="layout">
       {/* Header goes here */}
@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
       {/* Main content goes here */}
       <main className="main">
         <div className="card">
-          <h2>{title}</h2>
+          {/* <h2>{title}</h2> */}
           {children}
         </div>
       </main>
