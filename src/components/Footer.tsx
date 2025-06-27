@@ -10,17 +10,34 @@ import { icons } from "../constants/icons";
 const Footer = () => {
   return (
     <footer className="footer">
-      <div className="footer-links">
-        <div>©{new Date().getFullYear()} All Rights Reserved.</div>
-        <div>
-          {icons.YOUTUBE_WHITE}
-          {icons.TWITTER_WHITE}
-          {icons.FACEBOOK_WHITE}
+      <div className = "footer-links">
+        {/* Desktop */}
+        <div className="footer-desktop">
+            <div>©{new Date().getFullYear()} All Rights Reserved.</div>
+            <div className="footer-icons">
+              {icons.YOUTUBE_WHITE}
+              {icons.TWITTER_WHITE}
+              {icons.FACEBOOK_WHITE}
+            </div>
+            <div className="footer-infos">
+              <Link to="/">Contact us</Link>
+              <Link to="/">Privacy Policies</Link>
+              <Link to="/">Help</Link>
+            </div>
         </div>
-        <div className="footer-infos">
-          <Link to="/">Contact us</Link>
-          <Link to="/">Privacy Policies</Link>
-          <Link to="/">Help</Link>
+        {/* Mobile */}
+        <div className="footer-mobile">
+            <div className="footer-icons">
+              {icons.YOUTUBE_WHITE}
+              {icons.TWITTER_WHITE}
+              {icons.FACEBOOK_WHITE}
+            </div>
+            <div className="footer-infos">
+              <Link to="/">Contact us</Link>
+              <Link to="/">Privacy Policies</Link>
+              <Link to="/">Help</Link>
+            </div>
+            <div>©{new Date().getFullYear()} All Rights Reserved.</div>
         </div>
       </div>
     </footer>
