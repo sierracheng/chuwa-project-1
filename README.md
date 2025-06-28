@@ -1,69 +1,26 @@
-# React + TypeScript + Vite
+# Chuwa Product Management System
+  <div>
+    <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/MongoDB-%25234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white&color=3178C6" alt="Mongodb" />
+    <img src="https://img.shields.io/badge/React-%252320232a.svg?style=for-the-badge&logo=react&logoColor=%252361DAFB&color=3178C6" alt="React" />
+    <img src="https://img.shields.io/badge/Express.js-%2523404d59.svg?style=for-the-badge&logo=express&logoColor=%252361DAFB&color=3178C6" alt="Express" />
+    <img src="https://img.shields.io/badge/Node.js-%252343853D.svg?style=for-the-badge&logo=node.js&logoColor=white&color=3178C6" alt="Node" />
+    <img src="https://img.shields.io/badge/Redux-%2523593d88.svg?style=for-the-badge&logo=redux&logoColor=white&color=3178C6" alt="Redux" />
+    <img src="https://img.shields.io/badge/Redux_Thunk-%2523593d88.svg?style=for-the-badge&logo=redux&logoColor=white&color=3178C6" alt="Thunk" />
+  </div>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📋 Overview
+- npm install
+- npm run dev
+- [Figma](https://www.figma.com/file/brgvADTppPXJdYkaOR5AmW/Management-Chuwa?node-id=819%3A521)
 
-Currently, two official plugins are available:
+## ⚙️ Tech Stack
+- TypeScript
+- React.js
+- Express.js
+- Node.js
+- Redux
+- Thunk
+- MongoDB && Mongoose
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+  
