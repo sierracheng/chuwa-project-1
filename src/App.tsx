@@ -1,8 +1,7 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
-import { HomePage } from "./pages/HomePage";
 import Layout from "./components/Layout";
-import ErrorPage from "./pages/ErrorPage";
+import { ErrorPage, HomePage, LoginPage, SignUpPage } from './pages';
 
 function App() {
   return (
@@ -16,11 +15,27 @@ function App() {
             </Layout>
           }
         />
-          <Route
+        <Route
           path="/error"
           element={
             <Layout>
               <ErrorPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Layout>
+              <LoginPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <Layout>
+              <SignUpPage />
             </Layout>
           }
         />
