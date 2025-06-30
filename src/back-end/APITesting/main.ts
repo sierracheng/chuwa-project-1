@@ -1,17 +1,33 @@
-import { createUserAPI } from "./CreateUser";
+import { createUserAPI, getUserRoleAPI } from "./User";
 
-async function main() {
-  const result = await createUserAPI({
+async function testCreateUserAPI() {
+  const ret = await createUserAPI({
     email: "abcde@test.com",
     password: "ValidInput123",
     role: "Admin",
   });
 
-  if (result.success) {
-    console.log("User created:", result.data);
+  if (ret.success) {
+    console.log("User created:", ret.data);
   } else {
-    console.error("Error:", result.error);
+    console.error("Error:", ret.error);
   }
+}
+
+async function testGetUserRoleAPI() {
+  const email = "abcde@test.com";
+  const ret = await getUserRoleAPI(email);
+
+  if (ret.success) {
+    console.log("Get User's role:", ret.data.role);
+  } else {
+    console.error("Error:", ret.error);
+  }
+}
+
+async function main() {
+  // testCreateUserAPI();
+  testGetUserRoleAPI();
 }
 
 main().catch((err) => console.error(err));

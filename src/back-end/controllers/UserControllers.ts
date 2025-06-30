@@ -132,10 +132,11 @@ export async function updatePassword(req: Request, res: Response) {}
  * 1. Verify request body if the email is existing in database
  * 2. Try find this user
  * 3. return the role of this user
+ * @returns data.role
  */
 export async function getUserRole(req: Request, res: Response) {
   try {
-    const { email } = req.body;
+    const email = req.params.email;
 
     // Base case
     if (!validateEmailRequest(email)) {
@@ -152,10 +153,7 @@ export async function getUserRole(req: Request, res: Response) {
     return res.status(200).json({
       success: true,
       message: "Successfully found the user.",
-      data: {
-        email: user.email,
-        role: user.role,
-      },
+      role: user.role,
     });
   } catch (error) {
     return reportError(res, error, "Getting User's role");
