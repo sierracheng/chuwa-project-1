@@ -2,8 +2,8 @@ import { createUserAPI } from "./CreateUser";
 
 async function main() {
   const result = await createUserAPI({
-    email: "Admin2@gmail.com",
-    password: "123456789",
+    email: "abcde@test.com",
+    password: "ValidInput123",
     role: "Admin",
   });
 
