@@ -15,10 +15,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Header />
       {/* Main content goes here */}
       <main className="main">
-        <div className="card">
-          {/* <h2>{title}</h2> */}
-          {children}
-        </div>
+        {/* <h2>{title}</h2> */}
+        {children}
       </main>
       {/* Footer goes here */}
       <Footer />
