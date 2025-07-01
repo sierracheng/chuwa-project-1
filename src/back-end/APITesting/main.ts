@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createUserAPI, getUserRoleAPI, postFogortPassword } from "./User";
 
 async function testCreateUserAPI() {

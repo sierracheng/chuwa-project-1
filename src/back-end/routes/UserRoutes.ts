@@ -11,11 +11,9 @@
 import express, { Router } from "express";
 import {
   createUser,
-  emailVerify,
   findUser,
   forgotPassword,
   getUserRole,
-  resetPassword,
   updatePassword,
 } from "../controllers/UserControllers";
 
