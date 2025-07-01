@@ -1,9 +1,9 @@
-import { createUserAPI, getUserRoleAPI } from "./User";
+import { createUserAPI, getUserRoleAPI, postFogortPassword } from "./User";
 
 async function testCreateUserAPI() {
   const ret = await createUserAPI({
-    email: "abcde@test.com",
-    password: "ValidInput123",
+    email: "zgeming@seas.upenn.edu",
+    password: "Aa1234567890",
     role: "Admin",
   });
 
@@ -25,9 +25,20 @@ async function testGetUserRoleAPI() {
   }
 }
 
+async function testPostForgotPasswordAPI() {
+  const email = "zgeming@seas.upenn.edu";
+  const ret = await postFogortPassword(email);
+  if (ret.success) {
+    console.log("Post forgot password:", ret.data);
+  } else {
+    console.error("Error:", ret.error);
+  }
+}
+
 async function main() {
   // testCreateUserAPI();
-  testGetUserRoleAPI();
+  // testGetUserRoleAPI();
+  testPostForgotPasswordAPI();
 }
 
 main().catch((err) => console.error(err));

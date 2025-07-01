@@ -1,6 +1,7 @@
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/regex";
 import User from "../models/User";
 import { type Request, type Response } from "express";
+import { sendEmail } from "../SendGrid/SendEmail";
 
 /**
  * Private function
@@ -161,7 +162,47 @@ export async function getUserRole(req: Request, res: Response) {
 }
 
 /**
- * TODO:
- * Email verify to help user find password
+ * DONE:
+ * Call this API when user click forgot password
+ * 1. Validate email is valid or not
+ * 2. Find user
+ * 3. Generate a token
+ * 4. Send email to user
  */
-export async function emailVerify(req: Request, res: Response) {}
+export async function forgotPassword(req: Request, res: Response) {
+  try {
+    const { email } = req.body;
+
+    // Validate email
+    if (!validateEmailRequest(email)) {
+      return res.status(400).json({ message: "Email query is not valid" });
+    }
+
+    // Try find this user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Generate a naive token
+    const token = Date.now();
+    const resetUrl = `${process.env.PASSWORD_RESET_URL}/reset-password/${token}`;
+
+    // Send email
+    const msg = {
+      to: email, // Target email
+      from: process.env.DEFAULT_FROM_EMAIL!, // Use my default email
+      subject: "Password Reset - Chuwa Management System",
+      text: `Please click the link to reset your password:\n ${resetUrl}`,
+      html: `<p>Please click the link to reset your password:</p><a href="${resetUrl}">${resetUrl}</a>`,
+    };
+    await sendEmail(msg);
+
+    return res.status(200).json({
+      success: true,
+      message: `Password reset email sent to: ${user.email}`,
+    });
+  } catch (error) {
+    return reportError(res, error, "Sending email thru forgot password api");
+  }
+}
