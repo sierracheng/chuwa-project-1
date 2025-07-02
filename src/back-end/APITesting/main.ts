@@ -37,9 +37,9 @@ async function testPostForgotPasswordAPI() {
 }
 
 async function main() {
-  // testCreateUserAPI();
+  testCreateUserAPI();
   // testGetUserRoleAPI();
-  testPostForgotPasswordAPI();
+  // testPostForgotPasswordAPI();
 }
 
 main().catch((err) => console.error(err));
