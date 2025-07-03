@@ -66,7 +66,7 @@ export function SignUpPage() {
 
     return (
         <Card handleClose={handleClose}>
-            <div className="login-container">
+            <div className="signup-container">
                 <h2 className="signup-title">Sign up an account</h2>
 
                 <form className="signup-form" onSubmit={handleSubmit}>

@@ -1,48 +1,82 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../../components';
+import { EMAIL_REGEX, PASSWORD_REGEX } from '../../utils/regex';
 import "./LoginPage.css";
 
 
 
 export function LoginPage() {
     const navigate = useNavigate();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log({ email, password });
-    };
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
     const handleClose = () => {
         navigate(-1);
     };
 
+    const validateEmail = (value: string) => {
+        if (!EMAIL_REGEX.test(value)) {
+            setEmailError('Invalid email input!');
+            return false;
+        }
+        setEmailError('');
+        return true;
+    };
+
+    const validatePassword = (value: string) => {
+        if (!PASSWORD_REGEX.test(value)) {
+            setPasswordError(
+                'Invalid password input!'
+            );
+            return false;
+        }
+        setPasswordError('');
+        return true;
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const emailOK = validateEmail(email);
+        const passwordOK = validatePassword(password);
+
+        if (!emailOK || !passwordOK) {
+            return;
+        }
+
+        console.log('Creating account', { email, password });
+    };
+
     return (
         <Card handleClose={handleClose}>
             <div className="login-container">
-
-                <h2 className="login-title">Sign in to your account</h2>
+                <h2 className="login-title">Sign up an account</h2>
 
                 <form className="login-form" onSubmit={handleSubmit}>
-                    <div className="form-group">
+                    <div className={`${emailError ? '' : "form-group"}`}>
                         <label htmlFor="login-email" className="form-label">
                             Email
                         </label>
                         <input
                             id="login-email"
-                            type="email"
-                            className="form-input"
+                            type="text"
+                            className={`form-input ${emailError ? 'invalid' : ''}`}
                             placeholder="you@example.com"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
-                            required
+                        //onBlur={e => validateEmail(e.target.value)}
                         />
+                        {emailError && <small className="error-text">{emailError}</small>}
                     </div>
 
-                    <div className="form-group">
+
+                    <div className={`${passwordError ? '' : "form-group"}`}>
                         <label htmlFor="login-password" className="form-label">
                             Password
                         </label>
@@ -50,11 +84,11 @@ export function LoginPage() {
                             <input
                                 id="login-password"
                                 type={showPassword ? 'text' : 'password'}
-                                className="form-input"
-                                placeholder="••••••••••••••••••••"
+                                className={`form-input ${passwordError ? 'invalid' : ''}`}
+                                placeholder="••••••••"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
-                                required
+                            // onBlur={e => validatePassword(e.target.value)}
                             />
                             <button
                                 type="button"
@@ -65,6 +99,9 @@ export function LoginPage() {
                                 {showPassword ? 'Hide' : 'Show'}
                             </button>
                         </div>
+                        {passwordError && (
+                            <small className="error-text">{passwordError}</small>
+                        )}
                     </div>
 
                     <button type="submit" className="submit-button">
