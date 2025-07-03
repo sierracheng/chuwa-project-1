@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/Layout";
-import { ErrorPage, HomePage, LoginPage, SignUpPage, UpdatePassword } from './pages';
+import { ErrorPage, HomePage, LoginPage, SignUpPage, SuccessfulPage, UpdatePassword } from './pages';
 
 function App() {
   return (
@@ -40,15 +40,23 @@ function App() {
           }
         />
         <Route
-          path="/updatepassword"
+          path="/update-password"
           element={
             <Layout>
               <UpdatePassword />
             </Layout>
           }
         />
-      </Routes>
-    </BrowserRouter>
+        <Route
+          path="/update-password-success"
+          element={
+            <Layout>
+              <SuccessfulPage />
+            </Layout>
+          }
+        />
+      </Routes >
+    </BrowserRouter >
   );
 }
 

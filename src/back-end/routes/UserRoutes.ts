@@ -11,8 +11,8 @@
 import express, { Router } from "express";
 import {
   createUser,
-  emailVerify,
   findUser,
+  forgotPassword,
   getUserRole,
   updatePassword,
 } from "../controllers/UserControllers";
@@ -31,7 +31,7 @@ router
   });
 
 // 3. PUT: Update the password of an account
-router.put("/:email/password", (req, res) => {
+router.put("/update-password", (req, res) => {
   updatePassword(req, res);
 });
 
@@ -40,9 +40,9 @@ router.get("/:email/role", (req, res) => {
   getUserRole(req, res);
 });
 
-// 5. GET: Email service
-router.get("/:email/verify", (req, res) => {
-  emailVerify(req, res);
+// 5. POST: Forgot password
+router.post("/forgot-password", (req, res) => {
+  forgotPassword(req, res);
 });
 
 export default router;
