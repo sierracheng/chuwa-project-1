@@ -39,7 +39,7 @@ function App() {
             </Layout>
           }
         />
-      <Route
+        <Route
           path="/update-password"
           element={
             <Layout>
@@ -47,7 +47,7 @@ function App() {
             </Layout>
           }
         />
-      <Route
+        <Route
           path="/update-password-success"
           element={
             <Layout>
@@ -55,8 +55,8 @@ function App() {
             </Layout>
           }
         />
-      </Routes>
-    </BrowserRouter>
+      </Routes >
+    </BrowserRouter >
   );
 }
 

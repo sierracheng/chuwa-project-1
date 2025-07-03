@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.css';
+import { Card } from '../../components';
+import "./LoginPage.css";
 
-export interface LoginProps {
-    onClose?: () => void;
-}
 
-export function LoginPage({ onClose }: LoginProps) {
+
+export function LoginPage() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -18,19 +17,12 @@ export function LoginPage({ onClose }: LoginProps) {
     };
 
     const handleClose = () => {
-        if (onClose) return onClose();
         navigate(-1);
     };
 
     return (
-        <div className='card'>
+        <Card handleClose={handleClose}>
             <div className="login-container">
-                <button
-                    type="button"
-                    className="login-close"
-                    onClick={handleClose}
-                    aria-label="Close"
-                ></button>
 
                 <h2 className="login-title">Sign in to your account</h2>
 
@@ -88,6 +80,6 @@ export function LoginPage({ onClose }: LoginProps) {
                     <a href="/forgot-password">Forgot password?</a>
                 </div>
             </div>
-        </div>
+        </ Card >
     );
 }
