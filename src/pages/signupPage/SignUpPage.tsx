@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card/Card';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../utils/regex';
 import './SignUpPage.css';
-import { createUserAPI, type UserData } from '../../back-end/APITesting/CreateUser';
+import { createUserAPI, type UserData } from '../../back-end/APITesting/User';
 
 
 export function SignUpPage() {
