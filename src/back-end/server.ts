@@ -1,8 +1,10 @@
 import express from "express";
 import connectDB from "./config/dbConnect";
 import userRoutes from "./routes/UserRoutes";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 const PORT = process.env.PORT || 3003;
 
 // Add Middleware
