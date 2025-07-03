@@ -1,6 +1,6 @@
 import axios from "axios";
 
-interface UserData {
+export interface UserData {
   email: string;
   password: string;
   role: string;

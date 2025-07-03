@@ -5,6 +5,8 @@ import { IoIosSearch } from "react-icons/io";
 import { FiUser } from "react-icons/fi";
 import { IoCartOutline } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
+import { IoMdClose } from "react-icons/io";
+
 
 /**
  * TODO:
@@ -19,4 +21,5 @@ export const icons = {
   USER: <FiUser size={28} />,
   CART: <IoCartOutline size={28} />,
   ERROR: <MdErrorOutline />,
+  CLOSE: <IoMdClose />,
 };

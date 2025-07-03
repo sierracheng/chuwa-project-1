@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/Layout";
-import { ErrorPage, HomePage, LoginPage, SignUpPage } from './pages';
+import { ErrorPage, HomePage, LoginPage, SignUpPage, UpdatePassword } from './pages';
 
 function App() {
   return (
@@ -36,6 +36,14 @@ function App() {
           element={
             <Layout>
               <SignUpPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/updatepassword"
+          element={
+            <Layout>
+              <UpdatePassword />
             </Layout>
           }
         />
