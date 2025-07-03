@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { createUserAPI, getUserRoleAPI, postFogortPassword } from "./User";
+import { createUserAPI, getUserRoleAPI, forgotPasswordAPI, findUserAPI } from "./User";
 
 async function testCreateUserAPI() {
   const ret = await createUserAPI({
@@ -28,7 +28,7 @@ async function testGetUserRoleAPI() {
 
 async function testPostForgotPasswordAPI() {
   const email = "zgeming@seas.upenn.edu";
-  const ret = await postFogortPassword(email);
+  const ret = await forgotPasswordAPI(email);
   if (ret.success) {
     console.log("Post forgot password:", ret.data);
   } else {
@@ -36,10 +36,21 @@ async function testPostForgotPasswordAPI() {
   }
 }
 
+async function testfindUserAPI() {
+  const email = "zgeming@seas.upenn.edu";
+  const ret = await findUserAPI(email);
+  if (ret.success) {
+    console.log("Find user:", ret.data);
+  } else {
+    console.error("Error:", ret.error);
+  }
+}
+
 async function main() {
-  testCreateUserAPI();
+  // testCreateUserAPI();
   // testGetUserRoleAPI();
   // testPostForgotPasswordAPI();
+  testfindUserAPI();
 }
 
 main().catch((err) => console.error(err));
