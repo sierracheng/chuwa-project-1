@@ -37,7 +37,7 @@ async function testPostForgotPasswordAPI() {
 }
 
 async function testfindUserAPI() {
-  const email = "zgeming@seas.upenn.edu";
+  const email = "Test1@gmail.com";
   const ret = await findUserAPI(email);
   if (ret.success) {
     console.log("Find user:", ret.data);

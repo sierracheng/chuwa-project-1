@@ -8,7 +8,7 @@ export interface UserData {
 
 export async function findUserAPI(email: string) {
   try {
-    const response = await axios.post("http://localhost:3003/users", { email });
+    const response = await axios.get(`http://localhost:3003/users/${encodeURIComponent(email)}`);
     return {
       success: true,
       data: response.data,

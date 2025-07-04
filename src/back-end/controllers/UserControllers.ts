@@ -34,12 +34,17 @@ function validatePasswordStrength(password: string): boolean {
 }
 
 /**
- * TODO:
- * Find an existing User
+ * DONE:
+ * 1. Verify request body contains {email} or not.
+ * 2. Validate email format
+ * 3. Check if user already exists
+ * 4. If user exists, return the user data
+ * 5. If user does not exist, return 404 error
+ * 6. Handle success and error messages
  */
 export async function findUser(req: Request, res: Response) {
   try {
-    const { email } = req.body;
+    const email = req.params.email;
 
     // Validate client side API's request is valid or not
     if (!validateEmailRequest(email)) {

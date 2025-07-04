@@ -20,6 +20,9 @@ import {
 const router: Router = express.Router();
 
 // 1. GET: Find an existing account
+router.get("/users/:email", (req, res) => {
+  findUser(req, res);
+});
 // 2. POST: Create a new account
 router
   .route("/users")
