@@ -24,14 +24,9 @@ router.get("/users/:email", (req, res) => {
   findUser(req, res);
 });
 // 2. POST: Create a new account
-router
-  .route("/users")
-  .get((req, res) => {
-    findUser(req, res);
-  })
-  .post((req, res) => {
-    createUser(req, res);
-  });
+router.post("/users", (req, res) => {
+  createUser(req, res);
+});
 
 // 3. PUT: Update the password of an account
 router.put("/update-password", (req, res) => {

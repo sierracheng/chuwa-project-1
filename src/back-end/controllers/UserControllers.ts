@@ -61,8 +61,6 @@ export async function findUser(req: Request, res: Response) {
       success: true,
       message: "User found",
       user: {
-        email: user.email,
-        password: user.password,
         role: user.role,
       },
     });
@@ -116,8 +114,6 @@ export async function createUser(req: Request, res: Response) {
       success: true,
       message: "Successfully created a new user.",
       user: {
-        email: newUser.email,
-        password: newUser.password,
         role: newUser.role,
       },
     });
