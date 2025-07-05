@@ -8,7 +8,9 @@ export interface UserData {
 
 export async function findUserAPI(email: string) {
   try {
-    const response = await axios.get(`http://localhost:3003/users/${encodeURIComponent(email)}`);
+    const response = await axios.get("http://localhost:3003/users", {
+      params: { email },
+    });
     return {
       success: true,
       data: response.data,
@@ -66,5 +68,3 @@ export async function forgotPasswordAPI(email: string) {
     };
   }
 }
-
-

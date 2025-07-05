@@ -2,6 +2,7 @@ import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/regex";
 import User from "../models/User";
 import { type Request, type Response } from "express";
 import { sendEmail } from "../SendGrid/SendEmail";
+import jwt from "jsonwebtoken";
 
 /**
  * Private function
@@ -44,7 +45,7 @@ function validatePasswordStrength(password: string): boolean {
  */
 export async function findUser(req: Request, res: Response) {
   try {
-    const email = req.params.email;
+    const email = req.query.email as string;
 
     // Validate client side API's request is valid or not
     if (!validateEmailRequest(email)) {
@@ -205,5 +206,55 @@ export async function forgotPassword(req: Request, res: Response) {
     });
   } catch (error) {
     return reportError(res, error, "Sending email thru forgot password api");
+  }
+}
+
+/**
+ * TODO:
+ * 1. Validate email
+ * 2. Validate user and password
+ * 3. use JWT to generate the authToken
+ */
+export async function authLogin(req: Request, res: Response) {
+  try {
+    const { email, password } = req.body;
+
+    // Validate Email
+    if (!validateEmailRequest(email)) {
+      return res.status(400).json({ message: "Email query is not valid" });
+    }
+
+    // Validate User
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found." });
+    }
+
+    // Validate password
+    if (user.password !== password) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    // Generate JWT token
+    const authToken = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+        role: user.role,
+      },
+      process.env._KEY || "chuwa-proj-auth-token-jwt-secrete"
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token: authToken,
+      user: {
+        _id: user._id,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    return reportError(res, error, "Auth login api");
   }
 }
