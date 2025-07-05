@@ -4,9 +4,13 @@ import { Card } from "../../components/Card/Card";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/regex";
 import "./SignUpPage.css";
 import { createUserAPI, type UserData } from "../../back-end/APITesting/User";
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { increment, decrement } from "../../features/authenticate/authenticate";
 
 export function SignUpPage() {
   const navigate = useNavigate();
+  const count = useAppSelector(state => state.authenticate.value)
+  const dispatch = useAppDispatch()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -78,7 +82,6 @@ export function SignUpPage() {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              //onBlur={e => validateEmail(e.target.value)}
             />
             {emailError && <small className="error-text">{emailError}</small>}
           </div>
@@ -95,7 +98,6 @@ export function SignUpPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                // onBlur={e => validatePassword(e.target.value)}
               />
               <button
                 type="button"
