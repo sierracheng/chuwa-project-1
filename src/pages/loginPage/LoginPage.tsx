@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from '../../components';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../utils/regex';
 import "./LoginPage.css";
+import { findUserAPI, type UserData } from '../../back-end/APITesting/User';
 
 
 
@@ -12,6 +13,9 @@ export function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+
+    const [isAdmin, setIsAdmin] = useState(false);
+
 
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
@@ -50,7 +54,17 @@ export function LoginPage() {
             return;
         }
 
-        console.log('Creating account', { email, password });
+
+        const userData: UserData = {
+            email: email,
+            password: password,
+            role: isAdmin ? "Admin" : "User",
+        };
+        const response = findUserAPI(email);
+
+        console.log(response);
+
+        console.log("Authenticated", { email, password });
     };
 
     return (
