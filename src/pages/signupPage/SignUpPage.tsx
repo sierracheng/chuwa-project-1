@@ -4,13 +4,9 @@ import { Card } from "../../components/Card/Card";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/regex";
 import "./SignUpPage.css";
 import { createUserAPI, type UserData } from "../../back-end/APITesting/User";
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { increment, decrement } from "../../features/authenticate/authenticate";
 
 export function SignUpPage() {
   const navigate = useNavigate();
-  const count = useAppSelector(state => state.authenticate.value)
-  const dispatch = useAppDispatch()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

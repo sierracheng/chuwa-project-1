@@ -4,17 +4,22 @@ import { Card } from '../../components';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../utils/regex';
 import "./LoginPage.css";
 import { findUserAPI, type UserData } from '../../back-end/APITesting/User';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setIsLogin, setRole } from '../../features/authenticate/authenticate';
 
 
 
 export function LoginPage() {
     const navigate = useNavigate();
+    const { isLogin, role } = useAppSelector((state) => ({
+        isLogin: state.authenticate.isLogin,
+        role: state.authenticate.role,
+    }));
+    const dispatch = useAppDispatch()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
-    const [isAdmin, setIsAdmin] = useState(false);
 
 
     const [emailError, setEmailError] = useState('');
@@ -44,7 +49,7 @@ export function LoginPage() {
         return true;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const emailOK = validateEmail(email);
@@ -55,17 +60,26 @@ export function LoginPage() {
         }
 
 
-        const userData: UserData = {
-            email: email,
-            password: password,
-            role: isAdmin ? "Admin" : "User",
-        };
-        const response = findUserAPI(email);
+        // const userData: UserData = {
+        //     email: email,
+        //     password: password,
+        //     role: isAdmin ? "Admin" : "User",
+        // };
+        const response = await findUserAPI(email)
+
+        if (response.success) {
+            dispatch(setIsLogin(true))
+            dispatch(setRole(response.data.user.role))
+
+        }
+        else {
+
+        }
 
         console.log(response);
-
-        console.log("Authenticated", { email, password });
     };
+
+    console.log(isLogin)
 
     return (
         <Card handleClose={handleClose}>
