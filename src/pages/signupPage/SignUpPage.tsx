@@ -17,6 +17,8 @@ export function SignUpPage() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const [signupSuccess, setSignupSuccess] = useState(false);
+
   const handleClose = () => {
     navigate(-1);
   };
@@ -54,16 +56,29 @@ export function SignUpPage() {
       password: password,
       role: isAdmin ? "Admin" : "User",
     };
-    const response = createUserAPI(userData);
 
-    console.log(response);
+    try {
+      const response = createUserAPI(userData);
+      console.log(response);
 
-    console.log("Creating account", { email, password });
+      setSignupSuccess(true);
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 5000);
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
   };
 
   return (
     <Card handleClose={handleClose}>
       <div className="signup-container">
+        {signupSuccess && (
+          <div className="success-popup">
+            🎉 Account created! Redirecting to login page...
+          </div>
+        )}
         <h2 className="signup-title">Sign up an account</h2>
 
         <form className="signup-form" onSubmit={handleSubmit}>
