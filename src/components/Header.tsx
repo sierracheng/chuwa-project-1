@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import "./Layout.css";
 import { icons } from "../constants/icons";
+import AuthButton from "./AuthButton";
+
 
 
 /**
  * TODO:
- * 1. Add icons
- * 2. Link "Management" to the home page
- * 3. Link "Sign in" to the sign in page
- * 4. Implement Search bar
+ * 1. link auth with the header -useicons/signin->log out
+ * 2. link with redux reducer
  */
 const Header = () => {
   return (
@@ -32,12 +32,7 @@ const Header = () => {
             </Link>
           </div>
           <div className="header-actions">
-            <div className="header-user">
-              {icons.USER}
-              <Link to="/signin" className="signin-button">
-                Sign In
-              </Link>
-            </div>
+            <AuthButton />
             <button className='cart-button'>
               {icons.CART}
               <span className="cart-amount">$0.00</span>
@@ -75,12 +70,7 @@ const Header = () => {
             </button>
           </div>
           <div className="header-actions">
-          <div className="header-user">
-            {icons.USER}
-            <Link to="/signin" className="signin-button">
-              Sign In
-            </Link>
-          </div>
+            <AuthButton />
           <button className='cart-button'>
             {icons.CART}
             <span className="cart-amount">$0.00</span>

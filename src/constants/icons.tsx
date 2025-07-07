@@ -7,6 +7,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { MdErrorOutline } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { MdMarkEmailRead } from "react-icons/md";
+import { FiUserCheck } from "react-icons/fi";
 
 /**
  * TODO:
@@ -23,4 +24,5 @@ export const icons = {
   ERROR: <MdErrorOutline />,
   CLOSE: <IoMdClose />,
   EMAIL_SUCCESS: <MdMarkEmailRead />,
+  USER_CHECK: <FiUserCheck />,
 };

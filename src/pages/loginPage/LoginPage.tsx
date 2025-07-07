@@ -78,7 +78,7 @@ export function LoginPage() {
   return (
     <Card handleClose={handleClose}>
       <div className="login-container">
-        <h2 className="login-title">Sign up an account</h2>
+        <h2 className="login-title">Sign in to your account</h2>
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className={`${emailError ? "" : "form-group"}`}>

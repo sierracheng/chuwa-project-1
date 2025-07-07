@@ -9,11 +9,12 @@ export interface SuccessfulPageProps {
 }
 
 export const SuccessfulPage : React.FC<SuccessfulPageProps> = ({ onClose }) => {
-        const navigate = useNavigate();
-        const handleClose = () => {
-        if(onClose) return onClose();
-        navigate('/login');
-        };
+    const navigate = useNavigate();
+    const handleClose = () => {
+    if(onClose) return onClose();
+    navigate('/login');
+    };
+    
     return (
         <div className="successful-page">
             <div className='success-card'>
