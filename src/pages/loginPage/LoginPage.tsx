@@ -63,8 +63,8 @@ export function LoginPage() {
     const response = await findUserAPI(email);
 
     if (response.success) {
-      // dispatch(setIsLogin(true));
-      // dispatch(setRole(response.data.user.role));
+      dispatch(setIsLogin(true));
+      dispatch(setRole(response.data.user.role));
     } else {
     }
 

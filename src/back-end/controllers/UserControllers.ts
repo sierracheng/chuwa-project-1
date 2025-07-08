@@ -81,6 +81,7 @@ export async function findUser(req: Request, res: Response) {
  * 7. Handle success and error messages
  */
 export async function createUser(req: Request, res: Response) {
+  console.log("Creating User API called");
   try {
     const { email, password, role } = req.body;
     // Base case
@@ -125,9 +126,36 @@ export async function createUser(req: Request, res: Response) {
 
 /**
  * TODO:
- * Update User password
+ * Update User password- done
  */
-export async function updatePassword(req: Request, res: Response) {}
+export async function updatePassword(req: Request, res: Response) {
+  try {
+    const { email, password } = req.body;
+
+    // Base case
+    if (!validateEmailRequest(email) || !validatePasswordStrength(password)) {
+      return res.status(400).json({
+        message: "Invalid email or password format.",
+      });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Update the password
+    user.password = password;
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Password updated successfully.",
+    });
+  } catch (error) {
+    return reportError(res, error, "Updating User Password");
+  }
+}
 
 /**
  * DONE:

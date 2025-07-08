@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './UpdatePassword.css';
+import './ForgetPassword.css';
 import { CloseButton } from '../../components/closeButton';
 import { EMAIL_REGEX } from '../../utils/regex';
 import { findUserAPI, forgotPasswordAPI } from '../../back-end/APITesting/User';
 
-
-export interface UpdatePasswordProps {
+export interface ForgetPasswordProps {
     onClose?: () => void;
 }
 
-export const UpdatePassword: React.FC<UpdatePasswordProps> = ({ onClose }) => {
+export const ForgetPassword: React.FC<ForgetPasswordProps> = ({ onClose }) => {
     const [email, setEmail] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
     const [inputError, setInputError] = useState(false);

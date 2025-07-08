@@ -68,3 +68,22 @@ export async function forgotPasswordAPI(email: string) {
     };
   }
 }
+
+export async function updatePasswordAPI(email: string, newPassword: string) {
+  try {
+    const response = await axios.put(`http://localhost:3003/update-password`, {
+      email,
+      password: newPassword,
+    });
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error: any) {
+    console.error('Error updating password:', error);
+    return {
+      success: false,
+      error: 'Error updating password: ' + error.message,
+    };
+  }
+}

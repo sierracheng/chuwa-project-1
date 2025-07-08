@@ -24,5 +24,5 @@ export const icons = {
   ERROR: <MdErrorOutline />,
   CLOSE: <IoMdClose />,
   EMAIL_SUCCESS: <MdMarkEmailRead />,
-  USER_CHECK: <FiUserCheck />,
+  USER_CHECK: <FiUserCheck size={28}/>,
 };

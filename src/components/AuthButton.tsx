@@ -3,7 +3,7 @@ import { selectIsLogin, setIsLogin, setRole } from "../features/authenticate/aut
 import { logoutUser } from "../back-end/APITesting/Auth";
 import { Link } from "react-router-dom";
 import { icons } from "../constants/icons";
-import "./AuthButton.css"; // Assuming you have a CSS file for styling the AuthButton component
+// import "./AuthButton.css"; 
 
 /**
  * AuthButton component handles user authentication state.
@@ -22,18 +22,24 @@ const AuthButton = () => {
     }
 
     return (
-        <div className="header-user">
-            {isLogin ? (
-                <button className="logout-button" onClick={handleLogout}>
-                    <div className="icon">{icons.USER_CHECK}</div>
-                    <div>Log Out</div>
-                </button>
-            ) : (
-                <Link to="/login" className="signin-button">
-                    <div className="icon">{icons.USER}</div>
-                    <div>Log In</div>
-                </Link>
-            )}
+        <div className="flex items-center gap-2">
+        {isLogin ? (
+            <button
+            className="flex items-center text-white font-medium bg-transparent hover:text-purple-300 transition"
+            onClick={handleLogout}
+            >
+            <span className="text-white text-xl mr-3">{icons.USER_CHECK}</span>
+            <span className="hidden sm:inline">Log Out</span>
+            </button>
+        ) : (
+            <Link
+            to="/login"
+            className="flex items-center gap-2 rounded-lg border border-transparent px-4 py-2 text-base font-medium text-white bg-transparent cursor-pointer transition-colors duration-200 hover:text-purple-300"
+            >
+            <span className="text-white text-xl mr-3">{icons.USER}</span>
+            <span className="hidden sm:inline">Log In</span>
+            </Link>
+        )}
         </div>
     )
 };
