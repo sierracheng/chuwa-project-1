@@ -41,7 +41,7 @@ export const ForgetPassword: React.FC<ForgetPasswordProps> = ({ onClose }) => {
                 return;
             }
 
-            navigate('/update-password-success');
+            navigate('/forgot-password-success');
         } catch(error) {
             console.error(error);
             setErrorMsg('An error occurred while processing your request.');

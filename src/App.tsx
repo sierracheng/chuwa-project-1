@@ -56,7 +56,7 @@ function App() {
           }
         />
         <Route
-          path="/update-password"
+          path="/forgot-password"
           element={
             <Layout>
               <ForgetPassword />
@@ -64,7 +64,7 @@ function App() {
           }
         />
         <Route
-          path="/update-password-success"
+          path="/forgot-password-success"
           element={
             <Layout>
               <SuccessfulPage />
