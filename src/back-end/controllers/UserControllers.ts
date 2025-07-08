@@ -188,7 +188,7 @@ export async function forgotPassword(req: Request, res: Response) {
 
     // Generate a naive token
     const token = Date.now();
-    const resetUrl = `${process.env.PASSWORD_RESET_URL}/reset-password/${token}`;
+    const resetUrl = `${process.env.PASSWORD_RESET_URL}/${email}/reset-password/${token}`;
 
     // Send email
     const msg = {

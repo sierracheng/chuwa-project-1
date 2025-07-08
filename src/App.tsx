@@ -1,7 +1,14 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/Layout";
-import { ErrorPage, HomePage, LoginPage, SignUpPage, SuccessfulPage, UpdatePassword } from './pages';
+import {
+  ErrorPage,
+  HomePage,
+  LoginPage,
+  SignUpPage,
+  SuccessfulPage,
+  UpdatePassword,
+} from "./pages";
 
 function App() {
   return (
@@ -40,7 +47,7 @@ function App() {
           }
         />
         <Route
-          path="/update-password"
+          path="/forgot-password/:email/reset-password/:token"
           element={
             <Layout>
               <UpdatePassword />
@@ -55,8 +62,8 @@ function App() {
             </Layout>
           }
         />
-      </Routes >
-    </BrowserRouter >
+      </Routes>
+    </BrowserRouter>
   );
 }
 
