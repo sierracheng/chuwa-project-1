@@ -8,6 +8,7 @@ import {
   SignUpPage,
   SuccessfulPage,
   ForgetPassword,
+  ResetPasswordPage,
 } from "./pages";
 
 function App() {
@@ -48,6 +49,14 @@ function App() {
         />
         <Route
           path="/forgot-password/:email/reset-password/:token"
+          element={
+            <Layout>
+              <ResetPasswordPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/update-password"
           element={
             <Layout>
               <ForgetPassword />
