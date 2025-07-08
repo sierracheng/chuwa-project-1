@@ -22,7 +22,7 @@ export const SuccessfulPage : React.FC<SuccessfulPageProps> = ({ onClose }) => {
                 <div className='success-icon'>
                     {icons.EMAIL_SUCCESS}
                 </div>
-                <p className='success-message'>
+                <p className='success-message-success-page'>
                     We have sent the update password link to your email, please check that!
                 </p>
             </div>
