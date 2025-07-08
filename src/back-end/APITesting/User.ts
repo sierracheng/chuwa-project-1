@@ -69,11 +69,12 @@ export async function forgotPasswordAPI(email: string) {
   }
 }
 
-export async function updatePasswordAPI(email: string, newPassword: string) {
+export async function updatePasswordAPI(email: string, newPassword: string, token: string) {
   try {
     const response = await axios.put(`http://localhost:3003/update-password`, {
       email,
       password: newPassword,
+      token,
     });
     return {
       success: true,

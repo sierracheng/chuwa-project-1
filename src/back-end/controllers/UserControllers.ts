@@ -130,13 +130,16 @@ export async function createUser(req: Request, res: Response) {
  */
 export async function updatePassword(req: Request, res: Response) {
   try {
-    const { email, password } = req.body;
+    const { email, password, token } = req.body;
 
     // Base case
     if (!validateEmailRequest(email) || !validatePasswordStrength(password)) {
       return res.status(400).json({
         message: "Invalid email or password format.",
       });
+    }
+    if(!token) {
+      return res.status(400).json({message: "Reset token is required."});
     }
 
     const user = await User.findOne({ email });
@@ -216,7 +219,7 @@ export async function forgotPassword(req: Request, res: Response) {
 
     // Generate a naive token
     const token = Date.now();
-    const resetUrl = `${process.env.PASSWORD_RESET_URL}/${email}/reset-password/${token}`;
+    const resetUrl = `${process.env.PASSWORD_RESET_URL}/${encodeURIComponent(email)}/update-password/${token}`;
 
     // Send email
     const msg = {

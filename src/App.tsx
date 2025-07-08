@@ -8,7 +8,7 @@ import {
   SignUpPage,
   SuccessfulPage,
   ForgetPassword,
-  ResetPasswordPage,
+  UpdatePasswordPage,
 } from "./pages";
 
 function App() {
@@ -48,10 +48,10 @@ function App() {
           }
         />
         <Route
-          path="/forgot-password/:email/reset-password/:token"
+          path="/forgot-password/:email/update-password/:token"
           element={
             <Layout>
-              <ResetPasswordPage />
+              <UpdatePasswordPage />
             </Layout>
           }
         />

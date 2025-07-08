@@ -3,4 +3,4 @@ export * from './errorPage';
 export * from './loginPage';
 export * from './signupPage';
 export * from './ForgetPasswordPage';
-export * from './ResetPasswordPage';
+export * from './UpdatePasswordPage';
