@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { createUserAPI, getUserRoleAPI, forgotPasswordAPI, findUserAPI } from "./User";
+import type { IProduct } from "../models/Product";
+import { updateProductAPI } from "./Product";
+import {
+  createUserAPI,
+  getUserRoleAPI,
+  forgotPasswordAPI,
+  findUserAPI,
+} from "./User";
 
 async function testCreateUserAPI() {
   const ret = await createUserAPI({
@@ -46,11 +53,28 @@ async function testfindUserAPI() {
   }
 }
 
+async function testUpdateProductAPI() {
+  const updateData = {
+    name: "iPhone 16",
+    description: "Latest Apple iPhone",
+    category: "Electronics",
+    price: 700,
+    stock: 25,
+    imageUrl: "/",
+  };
+  const ret = await updateProductAPI(updateData.name, updateData as IProduct);
+  if (ret.success) {
+    console.log("Successfully update product:", ret.data);
+  } else {
+    console.error("Error:", ret.error);
+  }
+}
+
 async function main() {
   // testCreateUserAPI();
   // testGetUserRoleAPI();
   // testPostForgotPasswordAPI();
-  testfindUserAPI();
+  // testfindUserAPI();
 }
 
 main().catch((err) => console.error(err));

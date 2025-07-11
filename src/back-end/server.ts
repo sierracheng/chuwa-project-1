@@ -1,6 +1,7 @@
 import express from "express";
 import connectDB from "./config/dbConnect";
 import userRoutes from "./routes/UserRoutes";
+import productRoutes from "./routes/ProductRoutes";
 import cors from "cors";
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // Add routes
 app.use("/", userRoutes);
+app.use("/", productRoutes);
 
 // Connect to server
 connectDB().then(() => {
@@ -19,4 +21,3 @@ connectDB().then(() => {
     console.log(`Server running on ${PORT}`);
   });
 });
-

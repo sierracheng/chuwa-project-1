@@ -1,13 +1,3 @@
-/**
- * HTTP Status Code:
- * 200 OK
- * 201 Created
- * 202 Accepted
- * 400 Bad request
- * 404 Not found
- * 500 Internal Server Error
- */
-
 import express, { Router } from "express";
 import {
   authLogin,
@@ -48,6 +38,5 @@ router.post("/forgot-password", (req, res) => {
 router.post("/login", (req, res) => {
   authLogin(req, res);
 });
-
 
 export default router;
