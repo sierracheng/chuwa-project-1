@@ -1,11 +1,12 @@
 import ItemCard from "../../components/ItemCard";
+import { icons } from "../../constants/icons";
 
 export const HomePage = () => {
   return (
-    <div className="flex flex-col gap-20 p-6 w-full h-full items-start">
-      <div className="flex flex-row justify-between items-center w-full h-full">
+    <div className="flex flex-col gap-20 p-6 w-full h-full ">
+      <div className="flex justify-between items-center w-full h-full  md:flex-col lg:flex-row">
         {/* Put on left */}
-        <div className="text-3xl font-bold">Products</div>
+        <div className="text-3xl font-bold md:py-4 lg:py-0">Products</div>
 
         {/* Put on right */}
         <div className=" flex flex-row gap-5">
@@ -26,7 +27,23 @@ export const HomePage = () => {
           <ItemCard key={index} />
         ))}
       </div>
-      <div>pages</div>
+      {/* Page Selector */}
+      <div className="flex flex-row gap-2 items-center sm:justify-center lg:justify-end">
+        <button className="!bg-white">{icons.LEFT_ARROW}</button>
+        {Array.from({ length: 5 }).map((_, i) => {
+          const pageNum = i + 1;
+          return (
+            <button
+              key={pageNum}
+              onClick={() => {}}
+              className={`!bg-white px-4 py-2 border rounded`}
+            >
+              {pageNum}
+            </button>
+          );
+        })}
+        <button className="!bg-white">{icons.RIGHT_ARROW}</button>
+      </div>
     </div>
   );
 };

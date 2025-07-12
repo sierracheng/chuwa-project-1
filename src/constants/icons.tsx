@@ -8,6 +8,7 @@ import { MdErrorOutline } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { MdMarkEmailRead } from "react-icons/md";
 import { FiUserCheck } from "react-icons/fi";
+import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
 
 /**
  * TODO:
@@ -24,5 +25,7 @@ export const icons = {
   ERROR: <MdErrorOutline />,
   CLOSE: <IoMdClose />,
   EMAIL_SUCCESS: <MdMarkEmailRead />,
-  USER_CHECK: <FiUserCheck size={28}/>,
+  USER_CHECK: <FiUserCheck size={28} />,
+  LEFT_ARROW: <FaAngleDoubleLeft />,
+  RIGHT_ARROW: <FaAngleDoubleRight />,
 };
