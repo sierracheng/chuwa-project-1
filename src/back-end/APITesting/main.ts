@@ -8,6 +8,10 @@ import {
   findUserAPI,
 } from "./User";
 
+import{
+  createProductAPI,
+} from "./Product";
+
 async function testCreateUserAPI() {
   const ret = await createUserAPI({
     email: "zgeming@seas.upenn.edu",
@@ -53,18 +57,33 @@ async function testfindUserAPI() {
   }
 }
 
-async function testUpdateProductAPI() {
-  const updateData = {
-    name: "iPhone 16",
-    description: "Latest Apple iPhone",
-    category: "Electronics",
-    price: 700,
-    stock: 25,
-    imageUrl: "/",
-  };
-  const ret = await updateProductAPI(updateData.name, updateData as IProduct);
+// async function testUpdateProductAPI() {
+//   const updateData = {
+//     name: "iPhone 16",
+//     description: "Latest Apple iPhone",
+//     category: "Electronics",
+//     price: 700,
+//     stock: 25,
+//     imageUrl: "/",
+//   };
+//   const ret = await updateProductAPI(updateData.name, updateData as IProduct);
+//   if (ret.success) {
+//     console.log("Successfully update product:", ret.data);
+//   } else {
+//     console.error("Error:", ret.error);
+//   }
+// }
+async function testCreateProductAPI() {
+  const ret = await createProductAPI(
+    "iPhone 16",
+    "Latest Apple iPhone",
+    "Electronics",
+    700,
+    25,
+    "/",
+  );
   if (ret.success) {
-    console.log("Successfully update product:", ret.data);
+    console.log("Successfully create product:", ret.data);
   } else {
     console.error("Error:", ret.error);
   }
@@ -75,6 +94,7 @@ async function main() {
   // testGetUserRoleAPI();
   // testPostForgotPasswordAPI();
   // testfindUserAPI();
+  testCreateProductAPI();
 }
 
 main().catch((err) => console.error(err));

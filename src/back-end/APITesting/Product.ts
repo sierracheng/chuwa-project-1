@@ -3,7 +3,35 @@ import type { IProduct } from "../models/Product";
 
 export async function findProductAPI() {}
 
-export async function createProductAPI() {}
+export async function createProductAPI(
+  name: string, 
+  description: string, 
+  category: "Electronics" | "Clothing" | "Books" | "Home" | "Others",
+  price: number,
+  stock: number,
+  imageUrl?: string
+) {
+  try {
+    const response = await axios.post("http://localhost:3003/products", {
+      name: name.trim(),
+      description,
+      category,
+      price,
+      stock,
+      imageUrl: imageUrl ? imageUrl.trim() : undefined,
+    });
+    return {
+      success: true,
+      data: response.data,
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    };
+  }
+}
 
 export async function updateProductAPI(name: string, updateData: IProduct) {
   try {
@@ -13,7 +41,7 @@ export async function updateProductAPI(name: string, updateData: IProduct) {
     );
     return {
       success: true,
-      data: response.data,
+      product : response.data.product,
     };
   } catch (error) {
     return {
