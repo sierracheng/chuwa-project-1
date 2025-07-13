@@ -30,7 +30,7 @@ export async function createProduct(req: Request, res: Response) {
   if (typeof price !== "number" || price <= 0) {
     return res.status(400).json({ message: "Price must be a positive number" });
   }
-  
+
   //Validate stock
   if (typeof stock !== "number" || stock < 0) {
     return res.status(400).json({ message: "Stock must be a non-negative integer" });
@@ -51,7 +51,7 @@ export async function createProduct(req: Request, res: Response) {
     }
 
     // Create a new product
-    const newProduct = new Product({ name : name.trim(), description, category, price, stock });
+    const newProduct = new Product({ name: name.trim(), description, category, price, stock });
     //imageUrl is optional
     if (imageUrl) {
       newProduct.imageUrl = imageUrl.trim();
@@ -71,7 +71,34 @@ export async function createProduct(req: Request, res: Response) {
  * 1. Verify request body if the product name is existing in database
  * 2. Return the product details
  */
-export async function findProduct(req: Request, res: Response) {}
+export async function findProduct(req: Request, res: Response) {
+  const { name } = req.params;
+  try {
+    const product = await Product.findOneAndUpdate({ name });
+
+    // If cannot find product
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    return res.status(200).json({ message: "Product found successfully", product });
+  } catch (error) {
+    return reportError(res, error, "Product found failed");
+  }
+
+}
+
+export async function getAllProduct(req: Request, res: Response) {
+  try {
+    // Check if product with the same name already exists
+    const allProducts = await Product.find();
+
+    return res.status(200).json({ message: "Products Fetched Successfully", products: allProducts });
+  } catch (error) {
+    return reportError(res, error, "Products Fetched Failed");
+  }
+
+}
 
 /**
  * DONE:

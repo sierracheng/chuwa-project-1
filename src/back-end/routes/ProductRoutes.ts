@@ -3,6 +3,7 @@ import {
   createProduct,
   findProduct,
   updateProduct,
+  getAllProduct,
 } from "../controllers/ProductControllers";
 
 const router: Router = express.Router();
@@ -20,5 +21,8 @@ router.get("/products/:name", (req, res) => {
 router.put("/products/:name", (req, res) => {
   updateProduct(req, res);
 });
-
+// 4. GET: Get All existing products
+router.get("/products", (req, res) => {
+  getAllProduct(req, res);
+});
 export default router;

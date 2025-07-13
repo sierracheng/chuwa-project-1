@@ -1,11 +1,41 @@
 import axios from "axios";
 import type { IProduct } from "../models/Product";
 
-export async function findProductAPI() {}
+export async function getAllProductAPI() {
+  try {
+    const response = await axios.get("http://localhost:3003/products");
+    return {
+      success: true,
+      data: response.data,
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    };
+  }
+}
+
+export async function findProductAPI(name: string) {
+  try {
+    const response = await axios.get(`http://localhost:3003/products/${name}`);
+    return {
+      success: true,
+      data: response.data,
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    };
+  }
+}
 
 export async function createProductAPI(
-  name: string, 
-  description: string, 
+  name: string,
+  description: string,
   category: "Electronics" | "Clothing" | "Books" | "Home" | "Others",
   price: number,
   stock: number,
@@ -41,7 +71,7 @@ export async function updateProductAPI(name: string, updateData: IProduct) {
     );
     return {
       success: true,
-      product : response.data.product,
+      product: response.data.product,
     };
   } catch (error) {
     return {
