@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { IProduct } from "../models/Product";
-import { updateProductAPI } from "./Product";
+import { getAllProductAPI, updateProductAPI } from "./Product";
 import {
   createUserAPI,
   getUserRoleAPI,
@@ -8,9 +8,8 @@ import {
   findUserAPI,
 } from "./User";
 
-import{
-  createProductAPI,
-} from "./Product";
+import { createProductAPI } from "./Product";
+import { products1, products2 } from "./DummyProducts";
 
 async function testCreateUserAPI() {
   const ret = await createUserAPI({
@@ -57,33 +56,51 @@ async function testfindUserAPI() {
   }
 }
 
-// async function testUpdateProductAPI() {
-//   const updateData = {
-//     name: "iPhone 16",
-//     description: "Latest Apple iPhone",
-//     category: "Electronics",
-//     price: 700,
-//     stock: 25,
-//     imageUrl: "/",
-//   };
-//   const ret = await updateProductAPI(updateData.name, updateData as IProduct);
-//   if (ret.success) {
-//     console.log("Successfully update product:", ret.data);
-//   } else {
-//     console.error("Error:", ret.error);
-//   }
-// }
-async function testCreateProductAPI() {
-  const ret = await createProductAPI(
-    "iPhone 16",
-    "Latest Apple iPhone",
-    "Electronics",
-    700,
-    25,
-    "/",
-  );
+async function testUpdateProductAPI() {
+  const updateData = {
+    name: "iPhone 16",
+    description: "Latest Apple iPhone",
+    category: "Electronics",
+    price: 700,
+    stock: 25,
+    imageUrl: "/",
+  };
+  const ret = await updateProductAPI(updateData.name, updateData as IProduct);
   if (ret.success) {
-    console.log("Successfully create product:", ret.data);
+    console.log("Successfully update product:", ret);
+  } else {
+    console.error("Error:", ret.error);
+  }
+}
+
+async function testCreateProductAPI() {
+  const products = products2;
+  for (const product of products) {
+    const ret = await createProductAPI(
+      product.name,
+      product.description,
+      product.category as
+        | "Electronics"
+        | "Clothing"
+        | "Books"
+        | "Home"
+        | "Others",
+      product.price,
+      product.stock,
+      product.imageUrl
+    );
+    if (ret.success) {
+      console.log("Successfully create product:", ret.data);
+    } else {
+      console.error("Error:", ret.error);
+    }
+  }
+}
+
+async function testGetAllProductAPI() {
+  const ret = await getAllProductAPI(1, 10);
+  if (ret.success) {
+    console.log("Successfully Get all products:", ret.data);
   } else {
     console.error("Error:", ret.error);
   }
@@ -95,6 +112,7 @@ async function main() {
   // testPostForgotPasswordAPI();
   // testfindUserAPI();
   testCreateProductAPI();
+  // testGetAllProductAPI();
 }
 
 main().catch((err) => console.error(err));

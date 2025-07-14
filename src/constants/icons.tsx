@@ -26,6 +26,6 @@ export const icons = {
   CLOSE: <IoMdClose />,
   EMAIL_SUCCESS: <MdMarkEmailRead />,
   USER_CHECK: <FiUserCheck size={28} />,
-  LEFT_ARROW: <FaAngleDoubleLeft />,
-  RIGHT_ARROW: <FaAngleDoubleRight />,
+  LEFT_ARROW: <FaAngleDoubleLeft size={16} />,
+  RIGHT_ARROW: <FaAngleDoubleRight size={16} />,
 };

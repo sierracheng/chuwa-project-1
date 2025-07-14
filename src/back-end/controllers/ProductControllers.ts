@@ -33,36 +33,56 @@ export async function createProduct(req: Request, res: Response) {
 
   //Validate stock
   if (typeof stock !== "number" || stock < 0) {
-    return res.status(400).json({ message: "Stock must be a non-negative integer" });
+    return res
+      .status(400)
+      .json({ message: "Stock must be a non-negative integer" });
   }
 
   //Validate category
-  const validCategories = ["Electronics", "Clothing", "Books", "Home", "Others"];
+  const validCategories = [
+    "Electronics",
+    "Clothing",
+    "Books",
+    "Home",
+    "Others",
+  ];
   if (!validCategories.includes(category)) {
-    return res.status(400).json({ message: `Category must be one of the following: ${validCategories.join(", ")}` });
+    return res.status(400).json({
+      message: `Category must be one of the following: ${validCategories.join(
+        ", "
+      )}`,
+    });
   }
-
 
   try {
     // Check if product with the same name already exists
     const existingProduct = await Product.findOne({ name });
     if (existingProduct) {
-      return res.status(400).json({ message: "Product with this name already exists" });
+      return res
+        .status(400)
+        .json({ message: "Product with this name already exists" });
     }
 
     // Create a new product
-    const newProduct = new Product({ name: name.trim(), description, category, price, stock });
+    const newProduct = new Product({
+      name: name.trim(),
+      description,
+      category,
+      price,
+      stock,
+    });
     //imageUrl is optional
     if (imageUrl) {
       newProduct.imageUrl = imageUrl.trim();
     }
     await newProduct.save();
 
-    return res.status(201).json({ message: "Product created successfully", product: newProduct });
+    return res
+      .status(201)
+      .json({ message: "Product created successfully", product: newProduct });
   } catch (error) {
     return reportError(res, error, "Creating Product");
   }
-
 }
 
 /**
@@ -81,23 +101,36 @@ export async function findProduct(req: Request, res: Response) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    return res.status(200).json({ message: "Product found successfully", product });
+    return res
+      .status(200)
+      .json({ message: "Product found successfully", product });
   } catch (error) {
     return reportError(res, error, "Product found failed");
   }
-
 }
 
+/**
+ * Get all product based on input page and limit(how many products per time)
+ */
 export async function getAllProduct(req: Request, res: Response) {
   try {
-    // Check if product with the same name already exists
-    const allProducts = await Product.find();
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
 
-    return res.status(200).json({ message: "Products Fetched Successfully", products: allProducts });
+    const allProducts = await Product.find().skip(skip).limit(limit);
+    const totalProducts = await Product.countDocuments();
+
+    return res.status(200).json({
+      message: "Products Fetched Successfully",
+      products: allProducts,
+      total: totalProducts,
+      page,
+      pages: Math.ceil(totalProducts / limit),
+    });
   } catch (error) {
     return reportError(res, error, "Products Fetched Failed");
   }
-
 }
 
 /**

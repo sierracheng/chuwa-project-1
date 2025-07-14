@@ -1,14 +1,20 @@
 import axios from "axios";
 import type { IProduct } from "../models/Product";
 
-export async function getAllProductAPI() {
+/**
+ * Get products from database
+ * @param page Where page user in right now
+ * @param limit How many products need to be displayed per time
+ */
+export async function getAllProductAPI(page: number, limit: number) {
   try {
-    const response = await axios.get("http://localhost:3003/products");
+    const response = await axios.get(
+      `http://localhost:3003/products?page=${page}&limit=${limit}`
+    );
     return {
       success: true,
       data: response.data,
     };
-
   } catch (error) {
     return {
       success: false,
@@ -24,7 +30,6 @@ export async function findProductAPI(name: string) {
       success: true,
       data: response.data,
     };
-
   } catch (error) {
     return {
       success: false,
@@ -54,7 +59,6 @@ export async function createProductAPI(
       success: true,
       data: response.data,
     };
-
   } catch (error) {
     return {
       success: false,

@@ -1,7 +1,49 @@
 import ItemCard from "../../components/ItemCard";
-import { icons } from "../../constants/icons";
+import { useEffect, useState } from "react";
+import { getAllProductAPI } from "../../back-end/APITesting/Product";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  setProducts,
+  setTotalPages,
+} from "../../features/products/productSlice";
+import PageSelector from "../../components/PageSelector";
 
 export const HomePage = () => {
+  // Redux State Management
+  const dispatch = useAppDispatch();
+  const { products, currentPage } = useAppSelector((state) => ({
+    products: state.products.products,
+    currentPage: state.products.currentPage,
+  }));
+
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch products from database
+  const fetchProducts = async (page: number) => {
+    try {
+      const allProducts = await getAllProductAPI(page, 10);
+      dispatch(setProducts(allProducts.data.products));
+      dispatch(setTotalPages(allProducts.data.pages));
+    } catch (error) {
+      setError("Cannot get all products.");
+      console.error(
+        "Homepage while calling GET all product api error: ",
+        error
+      );
+    }
+  };
+
+  // Fetch product again when user click diffent pages
+  useEffect(() => {
+    fetchProducts(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
+  // Handle Error at front-end page
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="flex flex-col gap-20 p-6 w-full h-full ">
       <div className="flex justify-between items-center w-full h-full  md:flex-col lg:flex-row">
@@ -22,28 +64,16 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
+
+      {/* Item Card */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-        {Array.from({ length: 10 }).map((_, index) => (
-          <ItemCard key={index} />
+        {products.map((item) => (
+          <ItemCard key={item._id.toString()} product={item} />
         ))}
       </div>
+
       {/* Page Selector */}
-      <div className="flex flex-row gap-2 items-center sm:justify-center lg:justify-end">
-        <button className="!bg-white">{icons.LEFT_ARROW}</button>
-        {Array.from({ length: 5 }).map((_, i) => {
-          const pageNum = i + 1;
-          return (
-            <button
-              key={pageNum}
-              onClick={() => {}}
-              className={`!bg-white px-4 py-2 border rounded`}
-            >
-              {pageNum}
-            </button>
-          );
-        })}
-        <button className="!bg-white">{icons.RIGHT_ARROW}</button>
-      </div>
+      <PageSelector />
     </div>
   );
 };
