@@ -1,19 +1,26 @@
 import { icons } from "../constants/icons";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setCurrentPage } from "../features/products/productSlice";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const PageSelector = () => {
   // Redux State Management
   const dispatch = useAppDispatch();
-  const { currentPage, totalPages } = useAppSelector((state) => ({
-    currentPage: state.products.currentPage,
-    totalPages: state.products.totalPages,
-  }));
+  const currentPage = useAppSelector((state) => state.products.currentPage);
+  const totalPages = useAppSelector((state) => state.products.totalPages);
+
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   // When user click a page, set current page to the new page
   const handlePageChange = (page: number) => {
     // Base case check
     if (page >= 1 && page <= totalPages) {
+      // Update URL
+      const params = new URLSearchParams(searchParams);
+      params.set("page", page.toString());
+      navigate(`?${params.toString()}`);
+      // Update state
       dispatch(setCurrentPage(page));
     }
   };

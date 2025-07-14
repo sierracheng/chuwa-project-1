@@ -3,24 +3,27 @@ import { useEffect, useState } from "react";
 import { getAllProductAPI } from "../../back-end/APITesting/Product";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
+  setCurrentPage,
   setProducts,
   setTotalPages,
 } from "../../features/products/productSlice";
 import PageSelector from "../../components/PageSelector";
+import { useSearchParams } from "react-router-dom";
 
 export const HomePage = () => {
   // Redux State Management
   const dispatch = useAppDispatch();
-  const { products, currentPage } = useAppSelector((state) => ({
-    products: state.products.products,
-    currentPage: state.products.currentPage,
-  }));
+  const products = useAppSelector((state) => state.products.products);
+  const currentPage = useAppSelector((state) => state.products.currentPage);
 
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
 
   // Fetch products from database
   const fetchProducts = async (page: number) => {
     try {
+      setLoading(true);
       const allProducts = await getAllProductAPI(page, 10);
       dispatch(setProducts(allProducts.data.products));
       dispatch(setTotalPages(allProducts.data.pages));
@@ -30,15 +33,23 @@ export const HomePage = () => {
         "Homepage while calling GET all product api error: ",
         error
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   // Fetch product again when user click diffent pages
   useEffect(() => {
-    fetchProducts(currentPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+    const page = parseInt(searchParams.get("page") || "1");
+    fetchProducts(page);
+    dispatch(setCurrentPage(page));
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, searchParams]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   // Handle Error at front-end page
   if (error) {
     return <div>Error: {error}</div>;
