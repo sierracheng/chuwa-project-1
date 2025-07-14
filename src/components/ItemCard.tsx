@@ -1,4 +1,5 @@
 import type { IProduct } from "../back-end/models/Product";
+import React from "react";
 interface Props {
   product: IProduct;
 }
@@ -32,4 +33,4 @@ const ItemCard = ({ product }: Props) => {
   );
 };
 
-export default ItemCard;
+export default React.memo(ItemCard);

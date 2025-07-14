@@ -98,7 +98,7 @@ async function testCreateProductAPI() {
 }
 
 async function testGetAllProductAPI() {
-  const ret = await getAllProductAPI(1, 10);
+  const ret = await getAllProductAPI(1, 10, "priceUp");
   if (ret.success) {
     console.log("Successfully Get all products:", ret.data);
   } else {

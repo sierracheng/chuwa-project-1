@@ -26,38 +26,41 @@ export interface IProduct extends Document {
  * 6. stock: should be a non-negative integer
  * 7. imageUrl: optional, should be trimmed
  */
-const ProductSchema: Schema<IProduct> = new Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
+const ProductSchema: Schema<IProduct> = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      enum: ["Electronics", "Clothing", "Books", "Home", "Others"],
+      trim: true,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    stock: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    imageUrl: {
+      type: String,
+      default: null,
+      trim: true,
+    },
   },
-  description: {
-    type: String,
-    required: true,
-  },
-  category: {
-    type: String,
-    enum: ["Electronics", "Clothing", "Books", "Home", "Others"],
-    trim: true,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  stock: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
-  imageUrl: {
-    type: String,
-    default: null,
-    trim: true,
-  },
-});
+  { timestamps: true }
+);
 
 // Export the model
 const Product: Model<IProduct> = mongoose.model<IProduct>(

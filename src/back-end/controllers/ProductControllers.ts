@@ -116,9 +116,21 @@ export async function getAllProduct(req: Request, res: Response) {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
+    let sort;
     const skip = (page - 1) * limit;
 
-    const allProducts = await Product.find().skip(skip).limit(limit);
+    if (req.query.sort) {
+      try {
+        const parsed = JSON.parse(req.query.sort as string);
+        if (typeof parsed === "object" && parsed !== null) {
+          sort = parsed;
+        }
+      } catch {
+        return res.status(400).json({ message: "Invalid sort format" });
+      }
+    }
+
+    const allProducts = await Product.find().sort(sort).skip(skip).limit(limit);
     const totalProducts = await Product.countDocuments();
 
     return res.status(200).json({
