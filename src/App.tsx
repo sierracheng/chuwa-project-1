@@ -9,6 +9,7 @@ import {
   SuccessfulPage,
   ForgetPassword,
   UpdatePasswordPage,
+  CreateProductPage,
 } from "./pages";
 
 function App() {
@@ -68,6 +69,14 @@ function App() {
           element={
             <Layout>
               <SuccessfulPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/create-product"
+          element={
+            <Layout>
+              <CreateProductPage />
             </Layout>
           }
         />
