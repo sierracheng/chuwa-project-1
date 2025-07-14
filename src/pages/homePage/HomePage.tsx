@@ -23,6 +23,10 @@ export const HomePage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
+  const handleAddProduct = () => {
+    navigate("/create-product");
+  };
+
   // Handle sort change
   const handleSortChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -99,7 +103,9 @@ export const HomePage = () => {
             </select>
           </div>
           <div>
-            <button className="text-white">Add Product</button>
+            <button onClick={handleAddProduct} className="text-white">
+              Add Product
+            </button>
           </div>
         </div>
       </div>
