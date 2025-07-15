@@ -14,11 +14,11 @@ router.post("/products", (req, res) => {
   createProduct(req, res);
 });
 // 2. GET: Find an existing product
-router.get("/products/:name", (req, res) => {
+router.get("/products/:id", (req, res) => {
   findProduct(req, res);
 });
 // 3. PUT: Update an existing product
-router.put("/products/:name", (req, res) => {
+router.put("/products/:id", (req, res) => {
   updateProduct(req, res);
 });
 // 4. GET: Get All existing products

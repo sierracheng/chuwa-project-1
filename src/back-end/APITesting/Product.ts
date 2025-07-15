@@ -45,9 +45,9 @@ export async function getAllProductAPI(
   }
 }
 
-export async function findProductAPI(name: string) {
+export async function findProductAPI(id: string) {
   try {
-    const response = await axios.get(`http://localhost:3003/products/${name}`);
+    const response = await axios.get(`http://localhost:3003/products/${id}`);
     return {
       success: true,
       data: response.data,
@@ -89,10 +89,10 @@ export async function createProductAPI(
   }
 }
 
-export async function updateProductAPI(name: string, updateData: IProduct) {
+export async function updateProductAPI(id: string, updateData: IProduct) {
   try {
     const response = await axios.put(
-      `http://localhost:3003/products/${name}`,
+      `http://localhost:3003/products/${id}`,
       updateData
     );
     return {

@@ -92,9 +92,9 @@ export async function createProduct(req: Request, res: Response) {
  * 2. Return the product details
  */
 export async function findProduct(req: Request, res: Response) {
-  const { name } = req.params;
+  const { id } = req.params;
   try {
-    const product = await Product.findOneAndUpdate({ name });
+    const product = await Product.findOneAndUpdate({ _id: id });
 
     // If cannot find product
     if (!product) {
@@ -152,11 +152,11 @@ export async function getAllProduct(req: Request, res: Response) {
  * 2. Update the product details
  */
 export async function updateProduct(req: Request, res: Response) {
-  const { name } = req.params;
+  const { id } = req.params;
   const updateData = req.body;
 
   try {
-    const product = await Product.findOneAndUpdate({ name }, updateData);
+    const product = await Product.findOneAndUpdate({ _id: id }, updateData);
 
     // If cannot find product
     if (!product) {

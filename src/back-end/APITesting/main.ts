@@ -10,6 +10,7 @@ import {
 
 import { createProductAPI } from "./Product";
 import { products1, products2 } from "./DummyProducts";
+import test from "node:test";
 
 async function testCreateUserAPI() {
   const ret = await createUserAPI({
@@ -58,14 +59,15 @@ async function testfindUserAPI() {
 
 async function testUpdateProductAPI() {
   const updateData = {
-    name: "iPhone 16",
-    description: "Latest Apple iPhone",
+   name: "Happy face 2.0",
+    description: "Still happy, but upgraded!",
     category: "Electronics",
-    price: 700,
-    stock: 25,
-    imageUrl: "/",
+    price: 99.99,
+    stock: 10,
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/85/Smiley.svg",
   };
-  const ret = await updateProductAPI(updateData.name, updateData as IProduct);
+  const productId = "687563150edab04c3b9e46a2";
+  const ret = await updateProductAPI(productId, updateData as IProduct);
   if (ret.success) {
     console.log("Successfully update product:", ret);
   } else {
@@ -111,8 +113,9 @@ async function main() {
   // testGetUserRoleAPI();
   // testPostForgotPasswordAPI();
   // testfindUserAPI();
-  testCreateProductAPI();
+  // testCreateProductAPI();
   // testGetAllProductAPI();
+  testUpdateProductAPI();
 }
 
 main().catch((err) => console.error(err));
