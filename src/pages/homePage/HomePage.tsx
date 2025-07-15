@@ -67,11 +67,9 @@ export const HomePage = () => {
   useEffect(() => {
     const page = parseInt(searchParams.get("page") || "1");
     const sort = searchParams.get("sort") || "lastAdded";
-
+    fetchProducts(page, sort);
     dispatch(setCurrentPage(page));
     dispatch(setSortOption(sort));
-    fetchProducts(page, sort);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, searchParams, sortOption]);
 

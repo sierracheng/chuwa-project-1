@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import type { IProduct } from "../back-end/models/Product";
 import React from "react";
 interface Props {
@@ -5,10 +6,15 @@ interface Props {
 }
 
 const ItemCard = ({ product }: Props) => {
+  const navigate = useNavigate();
+  const handleItemOnClick = () => {
+    navigate(`/ProductDetailPage?id=${product._id}`);
+  };
   return (
     <div className="border border-gray-300 rounded-lg py-6 px-4 flex flex-col justify-between">
-      <div className="w-full h-48 bg-gray-100 rounded-t-lg mb-4 overflow-hidden">
+      <div className="w-full h-48 bg-gray-100 rounded-t-lg mb-4 overflow-hidden cursor-pointer">
         <img
+          onClick={handleItemOnClick}
           src={
             product.imageUrl === "/"
               ? "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone11-select-2019-family?wid=882&hei=1058&fmt=jpeg&qlt=90&.v=1567022175704"
