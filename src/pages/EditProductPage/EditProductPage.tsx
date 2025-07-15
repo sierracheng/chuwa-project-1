@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createProductAPI } from '../../back-end/APITesting/Product';
-import './CreateProductPage.css';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { findProductAPI, updateProductAPI } from '../../back-end/APITesting/Product';
+import './EditProductPage.css';
 import { Card } from '../../components/Card/Card';
 import { icons } from '../../constants/icons';
 
-export const CreateProductPage: React.FC = () => {
+export const EditProductPage: React.FC = () => {
     const [productName, setProductName] = useState('');
     const [productDescription, setProductDescription] = useState('');
     const [productPrice, setProductPrice] = useState('');
@@ -14,8 +14,28 @@ export const CreateProductPage: React.FC = () => {
     const [imageUrl, setImageUrl] = useState('');
     const [UploadImage, setUploadImage] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
+    // const [loading, setLoading] = useState(true);
     const [showSuccess, setShowSuccess] = useState(false);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get('id');
+
+    useEffect (() => {
+        async function fetchProduct() {
+            const res = await findProductAPI(id as string);
+            if (res.success) {
+                const product = res.data.product;
+                setProductName(product.name);
+                setProductDescription(product.description);
+                setProductCategory(product.category);
+                setProductPrice(product.price.toString());
+                setProductStock(product.stock.toString());
+                setImageUrl(product.imageUrl || '');
+                setUploadImage(product.imageUrl || '');
+            }
+        }
+        fetchProduct();
+    }, [id]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -26,21 +46,21 @@ export const CreateProductPage: React.FC = () => {
             setErrorMsg('All fields are required.');
             return;
         }
-    
-        const res = await createProductAPI(
-            productName,
-            productDescription,
-            productCategory as any, //?
-            parseFloat(productPrice),
-            parseInt(productStock),
-            imageUrl
-        )
+
+        const res = await updateProductAPI(id as string, {
+            name: productName,
+            description: productDescription,
+            category: productCategory as any, //?
+            price: parseFloat(productPrice),
+            stock: parseInt(productStock),
+            imageUrl,
+        } as any);
 
         if (res.success) {
             setShowSuccess(true);
             setTimeout(() => navigate('/'), 2000);
         } else {
-            setErrorMsg('Failed to create product.');
+            setErrorMsg('Failed to update product.');
         }
     };
 
@@ -50,9 +70,9 @@ export const CreateProductPage: React.FC = () => {
 
 
     return (
-        <div className='create-product-page'>
+        <div className='edit-product-page'>
             <div>
-            <h2 className='title-create-page'>Create Product</h2>
+            <h2 className='title-edit-page'>Edit Product</h2>
             <Card handleClose={handleClose} className='product-form-container'>
             <form onSubmit={handleSubmit} className='product-form'>
                 <label>Product Name</label>
@@ -87,6 +107,7 @@ export const CreateProductPage: React.FC = () => {
                         <label>Price</label>
                         <input
                             type='number'
+                            step='0.01'
                             value={productPrice}
                             onChange={(e) => setProductPrice(e.target.value)}
                             min='0'
@@ -135,8 +156,8 @@ export const CreateProductPage: React.FC = () => {
                 )}
                 </div>
                 {errorMsg && <p className='error-message-product'>{errorMsg}</p>}
-                {showSuccess && <p className='success-message-product'>Product created successfully!</p>}
-                <button type='submit' className='add-product-button'>Add Product</button>
+                {showSuccess && <p className='success-message-product'>Product updated successfully!</p>}
+                <button type='submit' className='add-product-button'>Update Product</button>
             </form>
             </Card>
             </div>
