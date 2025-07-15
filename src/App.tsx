@@ -1,6 +1,8 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/Layout";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminProtectedRoute from "./routes/AdminProtectedRoute";
 import {
   ErrorPage,
   HomePage,
@@ -73,22 +75,24 @@ function App() {
             </Layout>
           }
         />
-        <Route
-          path="/create-product"
-          element={
-            <Layout>
-              <CreateProductPage />
+        <Route element={<AdminProtectedRoute />}>
+          <Route
+            path="/create-product"
+            element={
+              <Layout>
+                <CreateProductPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/edit-product"
+            element={
+              <Layout>
+                <EditProductPage />
             </Layout>
-          }
-        />
-        <Route
-          path="/edit-product"
-          element={
-            <Layout>
-              <EditProductPage />
-            </Layout>
-          }
-        />
+            }
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

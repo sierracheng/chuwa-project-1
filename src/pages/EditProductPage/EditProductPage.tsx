@@ -14,7 +14,6 @@ export const EditProductPage: React.FC = () => {
     const [imageUrl, setImageUrl] = useState('');
     const [UploadImage, setUploadImage] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
-    // const [loading, setLoading] = useState(true);
     const [showSuccess, setShowSuccess] = useState(false);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
