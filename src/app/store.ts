@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authenticateReducer from "../features/authenticate/authenticate";
 import productsReducer from "../features/products/productSlice";
+import productQuantityReducer from "../features/products/productQuantity"
 
 export const store = configureStore({
   reducer: {
     authenticate: authenticateReducer,
     products: productsReducer,
+    productQuantity: productQuantityReducer,
   },
 });
 

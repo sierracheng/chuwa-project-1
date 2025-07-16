@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "../../components/Card/Card";
 import "./ProductDetailPage.css"
 import { findProductAPI } from "../../back-end/APITesting/Product";
-import { setIsLogin, setRole } from "../../features/authenticate/authenticate";
+import { increment, decrement, setQuantity } from "../../features/products/productQuantity";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 
@@ -28,6 +28,12 @@ export const ProductDetailPage: React.FC = () => {
         isLogin: state.authenticate.isLogin,
         role: state.authenticate.role,
     }));
+
+    const dispatch = useAppDispatch();
+    const { quantity } = useAppSelector((state) => ({
+        quantity: state.productQuantity.quantity,
+    }));
+
 
     useEffect(() => {
         if (!id) return;
@@ -77,7 +83,19 @@ export const ProductDetailPage: React.FC = () => {
                             </div>
                             <p className="product-description">{product.description}</p>
                             <div className="flex flex-row gap-5 w-3/4 mt-6">
-                                <button className="text-white w-[133px] h-[40px] flex items-center justify-center">Add to cart</button>
+                                {quantity === null ? (
+                                    <button onClick={() => dispatch(setQuantity(1))} className="text-white w-[133px] h-[40px] flex items-center justify-center">
+                                        Add to cart</button>) : (
+                                    <div className="text-white w-[133px] h-[40px] bg-[#5d30ff] flex items-center justify-center">
+                                        <button onClick={() => dispatch(decrement())} className="text-white h-[40px] items-center justify-center">
+                                            -
+                                        </button>
+                                        <span className="px-4 py-2">{quantity}</span>
+                                        <button onClick={() => dispatch(increment())} className="text-white h-[40px] items-center justify-center">
+                                            +
+                                        </button>
+                                    </div>)
+                                }
                                 {role === "Admin" &&
                                     <button className="!bg-white !border !border-gray-300 w-[133px] h-[40px] flex items-center justify-center">
                                         Edit
