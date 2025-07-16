@@ -12,12 +12,13 @@ export interface CardProps {
 export function Card({ children, className = '', handleClose }: CardProps) {
     return (
         <div className={`card ${className}`}>
-            <div
-                className="login-close"
-                onClick={handleClose}
-                aria-label="Close"
-            >{icons.CLOSE}
-            </div>
+            {handleClose &&
+                <div
+                    className="login-close"
+                    onClick={handleClose}
+                    aria-label="Close"
+                >{icons.CLOSE}
+                </div>}
             {children}
         </div>);
 }

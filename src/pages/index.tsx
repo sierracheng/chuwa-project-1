@@ -6,3 +6,4 @@ export * from './ForgetPasswordPage';
 export * from './UpdatePasswordPage';
 export * from './CreateProductPage';
 export * from './EditProductPage';
+export * from './ProductDetailPage';

@@ -1,0 +1,93 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Card } from "../../components/Card/Card";
+import "./ProductDetailPage.css"
+import { findProductAPI } from "../../back-end/APITesting/Product";
+import { setIsLogin, setRole } from "../../features/authenticate/authenticate";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+
+
+
+interface Product {
+    name: string;
+    description: string;
+    category: string;
+    price: number;
+    stock: number;
+    imageUrl?: string;
+}
+
+export const ProductDetailPage: React.FC = () => {
+    const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const { role } = useAppSelector((state) => ({
+        isLogin: state.authenticate.isLogin,
+        role: state.authenticate.role,
+    }));
+
+    useEffect(() => {
+        if (!id) return;
+
+        async function loadProduct() {
+            setLoading(true);
+
+            const res = await findProductAPI(id!);
+
+            if (res.success) {
+                setProduct(res.data.product as Product);
+                setError(null);
+
+            } else {
+                console.error(res.error);
+                setError("Failed to load product");
+            }
+            setLoading(false);
+
+        }
+
+        loadProduct();
+    }, [name]);
+
+    if (loading) return <p>Loading product…</p>;
+    if (error || !product) return <p>{error ?? "Product not found."}</p>;
+
+
+
+    return (
+        <div className="product-detail-wapper">
+            <h1 className="product-detail-title">Product Detail</h1>
+            <Card className="product-detail-card">
+                {loading ? <p>Loading product…</p> :
+                    <div className="product-content-container">
+                        <img
+                            src={product.imageUrl}
+                            alt={product.name}
+                            className="product-detail-image"
+                        />
+                        <div className="product-detail-info">
+                            <p className="product-category">{product.category}</p>
+                            <h2 className="product-name">{product.name}</h2>
+                            <div className="product-price-status">
+                                <span className="product-price">${product.price}</span>
+                                {product.stock <= 0 && <span className="out-of-stock">Out of Stock</span>}
+                            </div>
+                            <p className="product-description">{product.description}</p>
+                            <div className="flex flex-row gap-5 w-3/4 mt-6">
+                                <button className="text-white w-[133px] h-[40px] flex items-center justify-center">Add to cart</button>
+                                {role === "Admin" &&
+                                    <button className="!bg-white !border !border-gray-300 w-[133px] h-[40px] flex items-center justify-center">
+                                        Edit
+                                    </button>
+                                }
+                            </div>
+                        </div>
+
+                    </div>}
+            </Card>
+        </div>
+    )
+}

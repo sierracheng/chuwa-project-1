@@ -13,6 +13,7 @@ import {
   UpdatePasswordPage,
   CreateProductPage,
   EditProductPage,
+  ProductDetailPage,
 } from "./pages";
 
 function App() {
@@ -89,10 +90,18 @@ function App() {
             element={
               <Layout>
                 <EditProductPage />
-            </Layout>
+              </Layout>
             }
           />
         </Route>
+        <Route
+          path="/product/:id"
+          element={
+            <Layout>
+              <ProductDetailPage />
+            </Layout>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

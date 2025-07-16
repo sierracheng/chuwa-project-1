@@ -92,7 +92,7 @@ export function LoginPage() {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              //onBlur={e => validateEmail(e.target.value)}
+            //onBlur={e => validateEmail(e.target.value)}
             />
             {emailError && <small className="error-text">{emailError}</small>}
           </div>
@@ -109,7 +109,7 @@ export function LoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                // onBlur={e => validatePassword(e.target.value)}
+              // onBlur={e => validatePassword(e.target.value)}
               />
               <button
                 type="button"
