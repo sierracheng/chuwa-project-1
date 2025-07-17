@@ -13,6 +13,9 @@ const ItemCard = ({ product }: Props) => {
   const handleItemOnClick = () => {
     navigate(`/product/${product._id}`);
   };
+  const handleEditOnClick = () => {
+    navigate(`/edit-product?id=${product._id}`);
+  };
   const id = product._id.toString();
   const dispatch = useAppDispatch();
   const role = useAppSelector((state) => state.authenticate.role);
@@ -81,7 +84,7 @@ const ItemCard = ({ product }: Props) => {
             </div>
           )}
           {role === "Admin" && (
-            <button className="!bg-white !border !border-gray-300 !flex-1">
+            <button onClick={handleEditOnClick} className="!bg-white !border !border-gray-300 !flex-1">
               Edit
             </button>
           )}

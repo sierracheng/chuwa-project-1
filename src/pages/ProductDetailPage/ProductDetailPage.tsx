@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Card } from "../../components/Card/Card";
 import "./ProductDetailPage.css"
 import { findProductAPI } from "../../back-end/APITesting/Product";
@@ -24,6 +24,11 @@ export const ProductDetailPage: React.FC = () => {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
+
+    const handleEditOnClick = () => {
+    navigate(`/edit-product?id=${id}`);
+    };
 
     const { role } = useAppSelector((state) => ({
         role: state.authenticate.role,
@@ -84,20 +89,20 @@ export const ProductDetailPage: React.FC = () => {
                             <p className="product-description">{product.description}</p>
                             <div className="flex flex-row gap-5 w-3/4 mt-6">
                                 {(!productsInCart[product._id] || productsInCart[product._id].quantity === 0) ? (
-                                    <button onClick={() => dispatch(increment({ id: product._id, price: product.price }))} className="text-white w-[133px] h-[40px] flex items-center justify-center">
+                                    <button onClick={() => dispatch(increment({ id: product._id, name: product.name, price: product.price, imageUrl: product.imageUrl }))} className="text-white w-[133px] h-[40px] flex items-center justify-center">
                                         Add to cart</button>) : (
                                     <div className="text-white w-[133px] h-[40px] bg-[#5d30ff] flex items-center justify-center">
                                         <button onClick={() => dispatch(decrement({ id: product._id }))} className="text-white h-[40px] flex items-center justify-center">
                                             -
                                         </button>
                                         <span className="px-4 py-2">{productsInCart[product._id].quantity}</span>
-                                        <button onClick={() => dispatch(increment({ id: product._id, price: product.price }))} className="text-white h-[40px] flex items-center justify-center">
+                                        <button onClick={() => dispatch(increment({ id: product._id, name: product.name, price: product.price, imageUrl: product.imageUrl }))} className="text-white h-[40px] flex items-center justify-center">
                                             +
                                         </button>
                                     </div>)
                                 }
                                 {role === "Admin" &&
-                                    <button className="!bg-white !border !border-gray-300 w-[133px] h-[40px] flex items-center justify-center">
+                                    <button onClick={handleEditOnClick} className="!bg-white !border !border-gray-300 w-[133px] h-[40px] flex items-center justify-center">
                                         Edit
                                     </button>
                                 }
