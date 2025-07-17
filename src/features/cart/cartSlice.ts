@@ -28,7 +28,7 @@ export const CartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
-        addToCart(state, action: PayloadAction<{ id: string, name: string, price: number, imageUrl?: string }>) {
+        increment(state, action: PayloadAction<{ id: string, name: string, price: number, imageUrl?: string }>) {
             const { id, name, price, imageUrl } = action.payload
             if (state.productsInCart[id]) {
                 state.productsInCart[id].quantity += 1;
@@ -44,24 +44,14 @@ export const CartSlice = createSlice({
             }
             state.total += price;
         },
-        increment(state, action: PayloadAction<{ id: string, price: number }>) {
-            // if it was null, go to 1; otherwise +1
-
-            const { id, price } = action.payload
-            if (state.productsInCart[id]) {
-                state.productsInCart[id].quantity += 1
-            }
-            state.total += price;
-        },
 
         decrement(state, action: PayloadAction<{ id: string }>) {
             const { id } = action.payload
             if (state.productsInCart[id]) {
                 if (state.productsInCart[id].quantity > 1) {
-                    // if quantity is 1, remove the product from cart
                     state.productsInCart[id].quantity -= 1;
                     state.total -= state.productsInCart[id].price;
-                }  else {
+                } else {
                     state.total -= state.productsInCart[id].price;
                     delete state.productsInCart[id];
                 }
