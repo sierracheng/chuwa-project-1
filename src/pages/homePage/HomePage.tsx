@@ -17,6 +17,7 @@ export const HomePage = () => {
   const products = useAppSelector((state) => state.products.products);
   const currentPage = useAppSelector((state) => state.products.currentPage);
   const sortOption = useAppSelector((state) => state.products.sortOption);
+  const search = useAppSelector((state) => state.products.search);
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -26,6 +27,14 @@ export const HomePage = () => {
   const handleAddProduct = () => {
     navigate("/create-product");
   };
+
+  // When user input on search bar
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(search.toLowerCase()) ||
+      (product.description &&
+        product.description.toLowerCase().includes(search.toLowerCase()))
+  );
 
   // Handle sort change
   const handleSortChange = useCallback(
@@ -107,10 +116,16 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
+      {/* Show message if no products match search */}
+      {filteredProducts.length === 0 && search && (
+        <div className="text-center text-lg">
+          No products found matching "{search}"
+        </div>
+      )}
 
       {/* Item Card */}
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-        {products.map((item) => (
+        {filteredProducts.map((item) => (
           <ItemCard key={item._id.toString()} product={item} />
         ))}
       </div>
