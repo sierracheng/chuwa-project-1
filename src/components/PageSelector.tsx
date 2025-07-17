@@ -22,6 +22,8 @@ const PageSelector = () => {
       navigate(`?${params.toString()}`);
       // Update state
       dispatch(setCurrentPage(page));
+      // Update the page
+      window.location.reload();
     }
   };
 
