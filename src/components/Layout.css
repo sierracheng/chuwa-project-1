@@ -1,6 +1,6 @@
 .header-desktop {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   padding: 0 20px;
@@ -32,6 +32,7 @@
   display: flex;
   align-items: baseline;
   gap: 8px;
+  margin-left: 15px;
 }
 
 
@@ -136,6 +137,7 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  margin-right: 15px;
 }
 
 .signin-button {

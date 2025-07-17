@@ -1,16 +1,50 @@
-import { configureStore } from "@reduxjs/toolkit";
-import authenticateReducer from "../features/authenticate/authenticate";
-import productsReducer from "../features/products/productSlice";
+// store.ts
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
-export const store = configureStore({
-  reducer: {
-    authenticate: authenticateReducer,
-    products: productsReducer,
-  },
+import authenticateReducer from '../features/authenticate/authenticate';
+import productsReducer from '../features/products/productSlice';
+import cartReducer from '../features/cart/cartSlice';
+
+const rootReducer = combineReducers({
+  authenticate: authenticateReducer,
+  products: productsReducer,
+  cart: cartReducer,
 });
 
-// Infer the `RootState`,  `AppDispatch`, and `AppStore` types from the store itself
+const persistConfig = {
+  key: 'root',
+  storage,
+  // whitelist only the slices you want to persist:
+  whitelist: ['authenticate', 'cart'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        // ignore redux-persist action types
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export const persistor = persistStore(store);
+
+// inferred TS types for use throughout your app
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 export type AppStore = typeof store;

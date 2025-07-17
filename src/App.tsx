@@ -1,6 +1,8 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Layout from "./components/Layout";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminProtectedRoute from "./routes/AdminProtectedRoute";
 import {
   ErrorPage,
   HomePage,
@@ -10,6 +12,8 @@ import {
   ForgetPassword,
   UpdatePasswordPage,
   CreateProductPage,
+  EditProductPage,
+  ProductDetailPage,
 } from "./pages";
 
 function App() {
@@ -72,11 +76,29 @@ function App() {
             </Layout>
           }
         />
+        <Route element={<AdminProtectedRoute />}>
+          <Route
+            path="/create-product"
+            element={
+              <Layout>
+                <CreateProductPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/edit-product"
+            element={
+              <Layout>
+                <EditProductPage />
+              </Layout>
+            }
+          />
+        </Route>
         <Route
-          path="/create-product"
+          path="/product/:id"
           element={
             <Layout>
-              <CreateProductPage />
+              <ProductDetailPage />
             </Layout>
           }
         />

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "./Layout.css";
 import { icons } from "../constants/icons";
 import AuthButton from "./AuthButton";
+import { useAppSelector } from "../app/hooks";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSearch } from "../features/products/productSlice";
 import { useCallback } from "react";
@@ -12,6 +13,10 @@ import { useCallback } from "react";
  * 2. link with redux reducer
  */
 const Header = () => {
+  const { total } = useAppSelector((state) => ({
+    total: state.cart.total,
+  }));
+
   const dispatch = useAppDispatch();
   const search = useAppSelector((state) => state.products.search);
 
@@ -30,7 +35,7 @@ const Header = () => {
         <div className="header-mobile">
           <div className="header-top-mobile">
             <div className="header-content-logo">
-              <Link to="/home">
+              <Link to="/">
                 {/*Desktop*/}
                 <div className="logo-desktop">
                   <h1 className="management-title">Management</h1>
@@ -47,7 +52,7 @@ const Header = () => {
               <AuthButton />
               <button className="cart-button">
                 {icons.CART}
-                <span className="cart-amount">$0.00</span>
+                <span className="cart-amount">${total}</span>
               </button>
             </div>
           </div>
@@ -68,7 +73,7 @@ const Header = () => {
         {/* desktop version */}
         <div className="header-desktop">
           <div className="header-content-logo">
-            <Link to="/home">
+            <Link to="/">
               {/*Desktop*/}
               <div className="logo-desktop">
                 <h1 className="management-title">Management</h1>
@@ -91,7 +96,7 @@ const Header = () => {
             <AuthButton />
             <button className="cart-button">
               {icons.CART}
-              <span className="cart-amount">$0.00</span>
+              <span className="cart-amount">${total.toFixed(2)}</span>
             </button>
           </div>
         </div>

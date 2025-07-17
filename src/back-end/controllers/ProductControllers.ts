@@ -94,8 +94,7 @@ export async function createProduct(req: Request, res: Response) {
 export async function findProduct(req: Request, res: Response) {
   const { id } = req.params;
   try {
-    const product = await Product.findOneAndUpdate({ _id: id });
-
+    const product = await Product.findById({ _id: id });
     // If cannot find product
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
