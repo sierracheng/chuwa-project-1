@@ -4,22 +4,16 @@ import { Card } from "../../components";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/regex";
 import "./LoginPage.css";
 import { findUserAPI } from "../../back-end/APITesting/User";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import { setIsLogin, setRole } from "../../features/authenticate/authenticate";
 import { loginUser } from "../../back-end/APITesting/Auth";
 
 export function LoginPage() {
   const navigate = useNavigate();
-  const { isLogin, role } = useAppSelector((state) => ({
-    isLogin: state.authenticate.isLogin,
-    role: state.authenticate.role,
-  }));
   const dispatch = useAppDispatch();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
@@ -61,7 +55,7 @@ export function LoginPage() {
       dispatch(setRole(response.data.user.role));
       const res = await loginUser(email, password);
       console.log(res);
-      navigate(`/?role=${role}`);
+      navigate("/");
     } else {
       setEmailError("User not found");
     }
@@ -84,7 +78,6 @@ export function LoginPage() {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              //onBlur={e => validateEmail(e.target.value)}
             />
             {emailError && <small className="error-text">{emailError}</small>}
           </div>
@@ -101,7 +94,6 @@ export function LoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                // onBlur={e => validatePassword(e.target.value)}
               />
               <button
                 type="button"
