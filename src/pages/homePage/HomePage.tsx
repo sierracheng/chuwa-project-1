@@ -92,9 +92,9 @@ export const HomePage = () => {
 
   return (
     <div className="flex flex-col gap-20 p-6 w-full h-full ">
-      <div className="flex justify-between items-center w-full h-full  md:flex-col lg:flex-row">
+      <div className="flex flex-col justify-between items-center w-full h-full md:flex-row lg:flex-row">
         {/* Put on left */}
-        <div className="text-3xl font-bold md:py-4 lg:py-0">Products</div>
+        <div className="text-3xl font-bold py-4 md:py-0 lg:py-0">Products</div>
 
         {/* Put on right */}
         <div className=" flex flex-row gap-5">
