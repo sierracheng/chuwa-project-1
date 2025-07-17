@@ -17,14 +17,9 @@ const ItemCard = ({ product }: Props) => {
     navigate(`/edit-product?id=${product._id}`);
   };
   const id = product._id.toString();
-
-  const { role } = useAppSelector((state) => ({
-    role: state.authenticate.role,
-  }));
   const dispatch = useAppDispatch();
-  const { productsInCart } = useAppSelector((state) => ({
-    productsInCart: state.cart.productsInCart,
-  }));
+  const role = useAppSelector((state) => state.authenticate.role);
+  const productsInCart = useAppSelector((state) => state.cart.productsInCart);
 
   return (
     <div className="border border-gray-300 rounded-lg py-6 px-4 flex flex-col justify-between">
@@ -47,7 +42,14 @@ const ItemCard = ({ product }: Props) => {
           {!productsInCart[id] || productsInCart[id].quantity === 0 ? (
             <button
               onClick={() =>
-                dispatch(increment({ id: id, name: product.name, price: product.price, imageUrl: product.imageUrl }))
+                dispatch(
+                  increment({
+                    id: id,
+                    name: product.name,
+                    price: product.price,
+                    imageUrl: product.imageUrl,
+                  })
+                )
               }
               className="text-white !flex-1"
             >
@@ -66,7 +68,14 @@ const ItemCard = ({ product }: Props) => {
               </span>
               <button
                 onClick={() =>
-                  dispatch(increment({ id: id, name: product.name, price: product.price, imageUrl: product.imageUrl }))
+                  dispatch(
+                    increment({
+                      id: id,
+                      name: product.name,
+                      price: product.price,
+                      imageUrl: product.imageUrl,
+                    })
+                  )
                 }
                 className="flex-1 min-w-0 bg-[#5d30ff] text-white py-1 text-sm "
               >
