@@ -167,3 +167,44 @@ export async function updateProduct(req: Request, res: Response) {
     return reportError(res, error, "Updating Product");
   }
 }
+
+/**
+ * ApplyCouponAPI
+ * This function applies a coupon to the product.
+ * It checks if the coupon is valid and applies the discount to the product price.
+ */
+
+export async function applyCouponAPI(req: Request, res: Response) {
+  const { couponCode, price } = req.body;
+
+  // Validate coupon code
+  if (!couponCode) {
+    return res.status(400).json({ message: "Coupon code is required" });
+  }
+
+  try {
+    // Hardcoded some coupon
+    const validCouponBooks: Record<string, number> = {
+      NEWUSER10: 0.1, // 10% discount for new users
+      SUMMER20: 0.2, // 20% discount for summer sale
+      WINTER15: 0.15, // 15% discount for winter sale
+    };
+
+    const discount = validCouponBooks[couponCode];
+
+    // Assuming the product price is passed in the request body
+    if (typeof price !== "number" || price <= 0) {
+      return res.status(400).json({ message: "Invalid product price" });
+    }
+
+    const discounts = price * discount;
+
+    return res.status(200).json({
+      message: `Coupon applied successfully with ${couponCode}`,
+      discounts,
+      discountRate: discount,
+    });
+  } catch (error) {
+    return reportError(res, error, "Applying Coupon");
+  }
+}

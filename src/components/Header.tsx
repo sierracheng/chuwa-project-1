@@ -4,6 +4,8 @@ import { icons } from "../constants/icons";
 import AuthButton from "./AuthButton";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSearch } from "../features/products/productSlice";
+import { openCart, closeCart } from "../features/cart/cartSlice";
+import { SlidingCart } from "../pages/SlidingCart";
 import { useCallback } from "react";
 
 /**
@@ -12,6 +14,7 @@ import { useCallback } from "react";
  * 2. link with redux reducer
  */
 const Header = () => {
+  const isCartOpen = useAppSelector((state) => state.cart.isOpen);
   const dispatch = useAppDispatch();
   const total = useAppSelector((state) => state.cart.total);
 
@@ -26,6 +29,7 @@ const Header = () => {
   );
 
   return (
+    <>
     <header className="header">
       <div className="header-content">
         {/* mobile version */}
@@ -47,9 +51,9 @@ const Header = () => {
             </div>
             <div className="header-actions">
               <AuthButton />
-              <button className="cart-button">
+              <button className="cart-button" onClick={() => dispatch(openCart())}>
                 {icons.CART}
-                <span className="cart-amount">${total}</span>
+                <span className="cart-amount">${Math.abs(total).toFixed(2)}</span>
               </button>
             </div>
           </div>
@@ -91,14 +95,22 @@ const Header = () => {
           </div>
           <div className="header-actions">
             <AuthButton />
-            <button className="cart-button">
+            <button className="cart-button" onClick={() => dispatch(openCart())}>
               {icons.CART}
-              <span className="cart-amount">${total.toFixed(2)}</span>
+              <span className="cart-amount">${Math.abs(total).toFixed(2)}</span>
             </button>
           </div>
         </div>
       </div>
     </header>
+      {isCartOpen && (
+        <SlidingCart
+          onClose={() => {
+            dispatch(closeCart());
+          }}
+        />
+      )}
+    </>
   );
 };
 

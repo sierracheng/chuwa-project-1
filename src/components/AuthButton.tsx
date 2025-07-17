@@ -31,7 +31,7 @@ const AuthButton = () => {
     <div className="flex items-center gap-2">
       {isLogin ? (
         <button
-          className="flex items-center text-white font-medium bg-transparent hover:text-purple-300 transition"
+          className="flex items-center text-white font-medium !bg-transparent hover:text-purple-300 transition"
           onClick={handleLogout}
         >
           <span className="text-white text-xl mr-3">{icons.USER_CHECK}</span>

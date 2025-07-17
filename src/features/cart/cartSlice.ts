@@ -62,6 +62,11 @@ export const CartSlice = createSlice({
             const { id, quantity } = action.payload
             if (state.productsInCart[id]) {
                 const changedQuantity = Math.max(0, quantity);
+                if (changedQuantity === 0) {
+                delete state.productsInCart[id];
+                } else {
+                state.productsInCart[id].quantity = changedQuantity;
+                }
                 const diff_price = (changedQuantity - state.productsInCart[id].quantity) * state.productsInCart[id].price;
                 state.productsInCart[id].quantity = changedQuantity;
                 state.total += diff_price;
@@ -71,6 +76,7 @@ export const CartSlice = createSlice({
         removeFromCart(state, action: PayloadAction<{ id: string }>) {
             const { id } = action.payload
             if (state.productsInCart[id]) {
+                
                 state.total -= state.productsInCart[id].price * state.productsInCart[id].quantity;
                 delete state.productsInCart[id];
             }
@@ -95,7 +101,7 @@ export const CartSlice = createSlice({
     }
 })
 
-export const { increment, decrement, removeFromCart, clearCart, openCart, closeCart, toggleCart } = CartSlice.actions
+export const { increment, decrement, removeFromCart, setQuantity, clearCart, openCart, closeCart, toggleCart } = CartSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProductsInCart = (state: RootState) => state.cart.productsInCart
