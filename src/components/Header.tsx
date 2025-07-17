@@ -17,7 +17,6 @@ const Header = () => {
   const isCartOpen = useAppSelector((state) => state.cart.isOpen);
   const dispatch = useAppDispatch();
   const total = useAppSelector((state) => state.cart.total);
-
   const search = useAppSelector((state) => state.products.search);
 
   const handleSearchChange = useCallback(
@@ -51,7 +50,10 @@ const Header = () => {
               </div>
               <div className="header-actions">
                 <AuthButton />
-                <button className="cart-button" onClick={() => dispatch(openCart())}>
+                <button
+                  className="cart-button"
+                  onClick={() => dispatch(openCart())}
+                >
                   {icons.CART}
                   <span className="cart-amount">${total}.toFixed(2)</span>
                 </button>
@@ -88,16 +90,26 @@ const Header = () => {
               </Link>
             </div>
             <div className="header-search">
-              <input type="text" placeholder="Search" className="search-input" />
+              <input
+                value={search}
+                onChange={handleSearchChange}
+                placeholder="Search"
+                className="search-input"
+              />
               <button className="search-button" type="button">
                 {icons.SEARCH}
               </button>
             </div>
             <div className="header-actions">
               <AuthButton />
-              <button className="cart-button" onClick={() => dispatch(openCart())}>
+              <button
+                className="cart-button"
+                onClick={() => dispatch(openCart())}
+              >
                 {icons.CART}
-                <span className="cart-amount">${Math.abs(total).toFixed(2)}</span>
+                <span className="cart-amount">
+                  ${Math.abs(total).toFixed(2)}
+                </span>
               </button>
             </div>
           </div>
