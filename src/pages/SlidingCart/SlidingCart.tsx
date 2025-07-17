@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
+import type { AppDispatch } from '../../app/store';
+import { applyCouponThunk } from '../../features/cart/couponThunk';
 import { selectProductsInCart, selectTotal, increment, decrement, removeFromCart, clearCart } from '../../features/cart/cartSlice';
 import { icons } from '../../constants/icons';
 
@@ -8,19 +9,36 @@ interface SlidingCartProps {
     onClose: () => void;
 }
 export const SlidingCart: React.FC<SlidingCartProps> = ({onClose}) => {
+    const [couponCode, setCouponCode] = React.useState('');
+    const [discountTotal, setDiscountTotal] = React.useState(0);
     const productsInCart = useSelector(selectProductsInCart);
     const total = useSelector(selectTotal);
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const cartItems = Object.values(productsInCart);
     const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+    const handleApplyCoupon = async () => {
+        if (couponCode.trim() === '') {
+            alert('Please enter a valid coupon code');
+            return;
+        }
+        const res = await dispatch(applyCouponThunk({ CouponCode:couponCode, price: total }));
+        if (res.meta.requestStatus === 'fulfilled') {
+            // console.log('Coupon applied:', res.payload);
+            setDiscountTotal(res.payload);
+            alert('Coupon applied successfully!');
+        } else {
+            alert('Failed to apply coupon. Please try again.');
+        }
+        setCouponCode('');
+    };
 
     const subtotal = total.toFixed(2);
-    const discount = 0; // Assuming no discount for now, can be set based on a discount code
+    const discount = discountTotal.toFixed(2); // Use the state variable for the discount
     //Tax need change by location
-    const tax = (total * 0.1).toFixed(2); 
-    const estimateTotal = (total + parseFloat(tax) - discount).toFixed(2);
+    const tax = (total * 0.1).toFixed(2);
+    const estimateTotal = (total + parseFloat(tax) - parseFloat(discount)).toFixed(2);
 
     return (
         <div className='fixed inset-0 z-50 bg-black/50 flex justify-end transition-opacity'>
@@ -85,11 +103,16 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({onClose}) => {
             </div>
 
             {/* Discount code */}
-            <div className='p-4 border-t'>
+            <div className='p-4'>
                 <h3 className='font-semibold mb-2'>Apply Discount Code</h3>
                 <div className='flex space-x-2'>
-                    <input type="text" placeholder="Enter discount code" className='border border-gray-300 px-3 py-2 rounded flex-1' />
-                    <button className='bg-blue-600 text-white p-2 rounded mt-2'>Apply</button>
+                    <input 
+                    type="text" 
+                    placeholder="Enter discount code" 
+                    className='border border-gray-300 px-3 py-2 rounded flex-1'
+                    onChange = {(e) => setCouponCode(e.target.value)}
+                    />
+                    <button onClick={() => handleApplyCoupon()} className='bg-blue-600 text-white p-2 rounded mt-2'>Apply</button>
                 </div>
             </div>
 

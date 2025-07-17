@@ -106,3 +106,21 @@ export async function updateProductAPI(id: string, updateData: IProduct) {
     };
   }
 }
+
+export async function applyCouponAPI(couponCode: string, price: number) {
+  try {
+    const response = await axios.post("http://localhost:3003/coupon/apply", {
+      couponCode,
+      price,
+    });
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    };
+  }
+}

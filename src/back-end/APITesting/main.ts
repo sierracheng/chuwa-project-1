@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { IProduct } from "../models/Product";
-import { getAllProductAPI, updateProductAPI } from "./Product";
+import { getAllProductAPI, updateProductAPI, createProductAPI, applyCouponAPI } from "./Product";
 import {
   createUserAPI,
   getUserRoleAPI,
@@ -8,7 +8,6 @@ import {
   findUserAPI,
 } from "./User";
 
-import { createProductAPI } from "./Product";
 import { products1, products2 } from "./DummyProducts";
 import test from "node:test";
 
@@ -108,6 +107,17 @@ async function testGetAllProductAPI() {
   }
 }
 
+async function testApplyCouponAPI() {
+  const couponCode = "NEWUSER10";
+  const totalPrice = 100.0; // Example total price
+  const ret = await applyCouponAPI(couponCode, totalPrice);
+  if (ret.success) {
+    console.log("Successfully applied coupon:", ret.data);
+  } else {
+    console.error("Error applying coupon:", ret.error);
+  }
+}
+
 async function main() {
   // testCreateUserAPI();
   // testGetUserRoleAPI();
@@ -115,7 +125,8 @@ async function main() {
   // testfindUserAPI();
   // testCreateProductAPI();
   // testGetAllProductAPI();
-  testUpdateProductAPI();
+  // testUpdateProductAPI();
+  testApplyCouponAPI();
 }
 
 main().catch((err) => console.error(err));

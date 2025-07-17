@@ -174,7 +174,7 @@ export async function updateProduct(req: Request, res: Response) {
  * It checks if the coupon is valid and applies the discount to the product price.
  */
 
-export async function applyCouponAPI(req: Request, res: Response) {
+export async function applyCoupon(req: Request, res: Response) {
   const { couponCode, price } = req.body;
 
   // Validate coupon code

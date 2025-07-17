@@ -4,6 +4,7 @@ import {
   findProduct,
   updateProduct,
   getAllProduct,
+  applyCoupon,
 } from "../controllers/ProductControllers";
 
 const router: Router = express.Router();
@@ -24,5 +25,9 @@ router.put("/products/:id", (req, res) => {
 // 4. GET: Get All existing products
 router.get("/products", (req, res) => {
   getAllProduct(req, res);
+});
+// CouponApply API
+router.post("/coupon/apply", (req, res) => {
+  applyCoupon(req, res);
 });
 export default router;

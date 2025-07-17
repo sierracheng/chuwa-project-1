@@ -7,6 +7,7 @@ import {
 import { logoutUser } from "../back-end/APITesting/Auth";
 import { Link, useNavigate } from "react-router-dom";
 import { icons } from "../constants/icons";
+import { clearCart } from "../features/cart/cartSlice";
 // import "./AuthButton.css";
 
 /**
@@ -24,6 +25,7 @@ const AuthButton = () => {
     logoutUser();
     dispatch(setIsLogin(false));
     dispatch(setRole(""));
+    dispatch(clearCart());
     navigate("/login");
   };
 
