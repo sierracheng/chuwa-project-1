@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "../../components";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/regex";
 import "./LoginPage.css";
-import { findUserAPI, type UserData } from "../../back-end/APITesting/User";
+import { findUserAPI } from "../../back-end/APITesting/User";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setIsLogin, setRole } from "../../features/authenticate/authenticate";
 import { loginUser } from "../../back-end/APITesting/Auth";
@@ -54,26 +54,18 @@ export function LoginPage() {
     if (!emailOK || !passwordOK) {
       return;
     }
-
-    // const userData: UserData = {
-    //     email: email,
-    //     password: password,
-    //     role: isAdmin ? "Admin" : "User",
-    // };
     const response = await findUserAPI(email);
 
     if (response.success) {
       dispatch(setIsLogin(true));
       dispatch(setRole(response.data.user.role));
+      const res = await loginUser(email, password);
+      console.log(res);
+      navigate(`/?role=${role}`);
     } else {
+      setEmailError("User not found");
     }
-
-    console.log(response);
-    const res = await loginUser(email, password);
-    console.log(res);
   };
-
-  console.log(isLogin);
 
   return (
     <Card handleClose={handleClose}>
@@ -92,7 +84,7 @@ export function LoginPage() {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            //onBlur={e => validateEmail(e.target.value)}
+              //onBlur={e => validateEmail(e.target.value)}
             />
             {emailError && <small className="error-text">{emailError}</small>}
           </div>
@@ -109,7 +101,7 @@ export function LoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-              // onBlur={e => validatePassword(e.target.value)}
+                // onBlur={e => validatePassword(e.target.value)}
               />
               <button
                 type="button"
