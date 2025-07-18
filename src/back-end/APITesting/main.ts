@@ -108,7 +108,7 @@ async function testGetAllProductAPI() {
 }
 
 async function testApplyCouponAPI() {
-  const couponCode = "NEWUSER10";
+  const couponCode = "NEWUSER";
   const totalPrice = 100.0; // Example total price
   const ret = await applyCouponAPI(couponCode, totalPrice);
   if (ret.success) {

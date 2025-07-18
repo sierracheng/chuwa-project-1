@@ -199,6 +199,10 @@ export async function applyCoupon(req: Request, res: Response) {
 
     const discounts = price * discount;
 
+    if(discount === null || discount === undefined) {
+      return res.status(400).json({ message: "Invalid coupon code" });
+    }
+
     return res.status(200).json({
       message: `Coupon applied successfully with ${couponCode}`,
       discounts,
