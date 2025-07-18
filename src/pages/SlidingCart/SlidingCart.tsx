@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
 // import { applyCouponAPI } from "../../back-end/APITesting/Product";
@@ -15,14 +15,13 @@ import {
 import { icons } from "../../constants/icons";
 import { setLocation } from "../../features/authenticate/authenticate";
 import { useAppSelector } from "../../app/hooks";
-import { cityTaxMap } from "../../utils/taxMap";
+import { computeTax } from "../../utils/taxMap";
 import { QuantityInput } from "../../components";
 
 interface SlidingCartProps {
   onClose: () => void;
 }
 export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
-  const [tax, setTax] = useState(0);
   const couponCode = useAppSelector((state) => state.coupon.couponCode);
   const [inputCouponCode, setInputCouponCode] = useState("");
   const [discountTotal, setDiscountTotal] = useState(0);
@@ -40,14 +39,7 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
    */
   useEffect(() => {
     if (!latitude || !longitude) {
-      console.error(
-        "latitude: ",
-        latitude,
-        "  longtitude: ",
-        longitude,
-        "  location: ",
-        location
-      );
+      console.error("latitude: ", latitude, "  longtitude: ", longitude);
       return;
     }
     const fetchCity = async () => {
@@ -56,33 +48,32 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
         );
         const data = await res.json();
-        dispatch(setLocation(data.address.city));
-        const taxRate = cityTaxMap.get(location) || 0;
-        setTax(Number((total * taxRate).toFixed(2)));
+        const city = data.address.city;
+        dispatch(setLocation(city));
       } catch (error) {
         console.error("fetch city error: ", error);
       }
     };
 
     fetchCity();
-  }, [dispatch, latitude, longitude, location, total]);
+  }, [dispatch, latitude, longitude]);
 
-    /**
-     * Handle Apply Coupon
-     */
-    useEffect(() => {   
-        if (couponCode) {
-            // console.log("Applying coupon code:", couponCode, "with total:", total);
-            dispatch(applyCouponThunk({ couponCode, total }))
-            .unwrap()
-            .then ((res) => {
-                setDiscountTotal(res.discountTotal);
-            })
-            .catch(() => {
-                console.warn("Failed to update discount total");
-            });
-        }
-    }, [couponCode, dispatch, total]);
+  /**
+   * Handle Apply Coupon
+   */
+  useEffect(() => {
+    if (couponCode) {
+      // console.log("Applying coupon code:", couponCode, "with total:", total);
+      dispatch(applyCouponThunk({ couponCode, total }))
+        .unwrap()
+        .then((res) => {
+          setDiscountTotal(res.discountTotal);
+        })
+        .catch(() => {
+          console.warn("Failed to update discount total");
+        });
+    }
+  }, [couponCode, dispatch, total]);
 
   const handleApplyCoupon = async () => {
     if (inputCouponCode.trim() === "") {
@@ -100,6 +91,8 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
     }
     setInputCouponCode("");
   };
+
+  const tax = useMemo(() => computeTax(total, location), [total, location]);
 
   const subtotal = total.toFixed(2);
   const discount = discountTotal.toFixed(2); // Use the state variable for the discount

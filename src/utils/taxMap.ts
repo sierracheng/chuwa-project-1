@@ -1,4 +1,16 @@
 /**
+ * Compute Tax based on the current user's city
+ * Only available if user is living in California
+ * @param total Total amount of charge
+ * @param city Current user's city
+ * @returns Tax fee
+ */
+export function computeTax(total: number, city: string): number {
+  const taxRate = cityTaxMap.get(city) || 0;
+  return Number((total * taxRate).toFixed(2));
+}
+
+/**
  * Hard code all the cities sale tax rate in California
  */
 export const cityTaxMap: Map<string, number> = new Map<string, number>([
@@ -49,4 +61,5 @@ export const cityTaxMap: Map<string, number> = new Map<string, number>([
   ["Santa Rosa", 0.0925],
   ["Vallejo", 0.0925],
   ["Victorville", 0.0775],
+  ["Bellevue", 0.102],
 ]);
