@@ -1,15 +1,13 @@
 import ItemCard from "../../components/ItemCard";
-import { useCallback, useEffect, useState } from "react";
-import { getAllProductAPI } from "../../back-end/APITesting/Product";
+import { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   setCurrentPage,
-  setProducts,
   setSortOption,
-  setTotalPages,
 } from "../../features/products/productSlice";
 import PageSelector from "../../components/PageSelector";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { fetchProductsThunk } from "../../features/products/productThunk";
 
 export const HomePage = () => {
   // Redux State Management
@@ -18,9 +16,9 @@ export const HomePage = () => {
   const currentPage = useAppSelector((state) => state.products.currentPage);
   const sortOption = useAppSelector((state) => state.products.sortOption);
   const search = useAppSelector((state) => state.products.search);
+  const loading = useAppSelector((state) => state.products.loading);
+  const error = useAppSelector((state) => state.products.error);
 
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -40,43 +38,27 @@ export const HomePage = () => {
   const handleSortChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       const option = e.target.value;
+      const page = 1;
+
       const params = new URLSearchParams(searchParams);
       params.set("sort", option);
+      params.set("page", page.toString());
       navigate(`?${params.toString()}`);
       dispatch(setSortOption(option));
-      fetchProducts(currentPage, option);
+      dispatch(setCurrentPage(page));
+      dispatch(fetchProductsThunk({ page, sort: option }));
+      // Update the page
+      window.location.reload();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [searchParams, navigate, dispatch, currentPage]
-  );
-
-  // Fetch products from database
-  const fetchProducts = useCallback(
-    async (page: number, sort: string) => {
-      try {
-        setLoading(true);
-        setError(null);
-        const allProducts = await getAllProductAPI(page, 10, sort);
-        dispatch(setProducts(allProducts.data.products));
-        dispatch(setTotalPages(allProducts.data.pages));
-      } catch (error) {
-        setError("Cannot get all products.");
-        console.error(
-          "Homepage while calling GET all product api error: ",
-          error
-        );
-      } finally {
-        setLoading(false);
-      }
-    },
-    [dispatch]
   );
 
   // Fetch product again when user click diffent pages
   useEffect(() => {
     const page = parseInt(searchParams.get("page") || "1");
     const sort = searchParams.get("sort") || "lastAdded";
-    fetchProducts(page, sort);
+    dispatch(fetchProductsThunk({ page, sort }));
     dispatch(setCurrentPage(page));
     dispatch(setSortOption(sort));
     // eslint-disable-next-line react-hooks/exhaustive-deps
