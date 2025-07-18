@@ -38,7 +38,7 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
    * Compute Tax Rate
    */
   useEffect(() => {
-    if (!latitude || !longitude || !location) {
+    if (!latitude || !longitude) {
       console.error(
         "latitude: ",
         latitude,
