@@ -3,8 +3,8 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
 
 interface ProductCart {
-    id : string,
-    name : string,
+    id: string,
+    name: string,
     price: number,
     quantity: number;
     imageUrl?: string;
@@ -62,13 +62,13 @@ export const CartSlice = createSlice({
             const { id, quantity } = action.payload
             if (state.productsInCart[id]) {
                 const changedQuantity = Math.max(0, quantity);
-                if (changedQuantity === 0) {
-                delete state.productsInCart[id];
-                } else {
-                state.productsInCart[id].quantity = changedQuantity;
-                }
                 const diff_price = (changedQuantity - state.productsInCart[id].quantity) * state.productsInCart[id].price;
-                state.productsInCart[id].quantity = changedQuantity;
+                if (changedQuantity === 0) {
+                    delete state.productsInCart[id];
+                } else {
+                    state.productsInCart[id].quantity = changedQuantity;
+                }
+
                 state.total += diff_price;
             }
         },
@@ -76,7 +76,7 @@ export const CartSlice = createSlice({
         removeFromCart(state, action: PayloadAction<{ id: string }>) {
             const { id } = action.payload
             if (state.productsInCart[id]) {
-                
+
                 state.total -= state.productsInCart[id].price * state.productsInCart[id].quantity;
                 delete state.productsInCart[id];
             }

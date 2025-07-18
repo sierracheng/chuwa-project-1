@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, type ChangeEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card } from "../../components/Card/Card";
+import { Card, ProductButton, QuantityInput } from "../../components/";
 import "./ProductDetailPage.css"
 import { findProductAPI } from "../../back-end/APITesting/Product";
-import { increment, decrement } from "../../features/cart/cartSlice";
+import { increment, decrement, setQuantity } from "../../features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { ProductButton } from "../../components/ProductButton/ProductButton";
 
 
 
@@ -23,24 +22,10 @@ export const ProductDetailPage: React.FC = () => {
 
     const { id } = useParams<{ id: string }>();
     const [product, setProduct] = useState<Product | null>(null);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
-
-    const handleEditOnClick = () => {
-        navigate(`/edit-product?id=${id}`);
-    };
-
-    const { role } = useAppSelector((state) => ({
-        role: state.authenticate.role,
-    }));
-
-    const dispatch = useAppDispatch();
-    const { productsInCart } = useAppSelector((state) => ({
-        productsInCart: state.cart.productsInCart,
-    }));
-
-
     useEffect(() => {
         if (!id) return;
 
@@ -63,6 +48,30 @@ export const ProductDetailPage: React.FC = () => {
 
         loadProduct();
     }, [name]);
+
+
+
+    const handleEditOnClick = () => {
+        navigate(`/edit-product?id=${id}`);
+    };
+
+    const { role } = useAppSelector((state) => ({
+        role: state.authenticate.role,
+    }));
+
+    const dispatch = useAppDispatch();
+    const { productsInCart } = useAppSelector((state) => ({
+        productsInCart: state.cart.productsInCart,
+    }));
+
+    const qty = product ? (productsInCart[product._id]?.quantity || 0) : 0
+
+    const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(e.target.value, 10);
+        if (!isNaN(value) && product) {
+            dispatch(setQuantity({ id: product._id, quantity: value }));
+        }
+    };
 
     if (loading) return <p>Loading product…</p>;
     if (error || !product) return <p>{error ?? "Product not found."}</p>;
@@ -89,7 +98,7 @@ export const ProductDetailPage: React.FC = () => {
                             </div>
                             <p className="product-description">{product.description}</p>
                             <div className="flex flex-row gap-5 w-3/4 mt-6">
-                                {(!productsInCart[product._id] || productsInCart[product._id].quantity === 0) ? (
+                                {(!productsInCart[product._id] || qty === 0) ? (
                                     <ProductButton buttonText="Add to Cart" handleClick={() => {
                                         dispatch(increment({
                                             id: product._id,
@@ -104,7 +113,13 @@ export const ProductDetailPage: React.FC = () => {
                                                 id: product._id
                                             }))
                                         }}></ProductButton>
-                                        <span className="px-4 py-2">{productsInCart[product._id].quantity}</span>
+                                        <QuantityInput
+                                            value={qty}
+                                            onChange={(newQty) =>
+                                                dispatch(setQuantity({ id: product._id, quantity: newQty }))
+                                            }
+                                        />
+                                        {/* <span className="px-4 py-2">{productsInCart[product._id].quantity}</span> */}
                                         <ProductButton buttonText="+" handleClick={() => {
                                             dispatch(increment({
                                                 id: product._id, price: product.price,
