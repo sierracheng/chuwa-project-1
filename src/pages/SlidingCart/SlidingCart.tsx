@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
 import { applyCouponThunk } from "../../features/cart/couponThunk";
@@ -11,19 +11,45 @@ import {
   clearCart,
 } from "../../features/cart/cartSlice";
 import { icons } from "../../constants/icons";
+import { setLocation } from "../../features/authenticate/authenticate";
+import { useAppSelector } from "../../app/hooks";
+import { cityTaxMap } from "../../utils/taxMap";
 
 interface SlidingCartProps {
   onClose: () => void;
 }
 export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
-  const [couponCode, setCouponCode] = React.useState("");
-  const [discountTotal, setDiscountTotal] = React.useState(0);
+  const [tax, setTax] = useState(0);
+  const [couponCode, setCouponCode] = useState("");
+  const [discountTotal, setDiscountTotal] = useState(0);
   const productsInCart = useSelector(selectProductsInCart);
   const total = useSelector(selectTotal);
   const dispatch = useDispatch<AppDispatch>();
-
   const cartItems = Object.values(productsInCart);
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const latitude = localStorage.getItem("lat");
+  const longitude = localStorage.getItem("lng");
+  const location = useAppSelector((state) => state.authenticate.location);
+
+  /**
+   * Compute Tax Rate
+   */
+  useEffect(() => {
+    if (!latitude || !longitude || !location) {
+      return;
+    }
+    const fetchCity = async () => {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+      );
+      const data = await res.json();
+      dispatch(setLocation(data.address.city));
+      const taxRate = cityTaxMap.get(location) || 0;
+      setTax(Number((total * taxRate).toFixed(2)));
+    };
+
+    fetchCity();
+  }, [dispatch, latitude, longitude, location, total]);
 
   const handleApplyCoupon = async () => {
     if (couponCode.trim() === "") {
@@ -46,12 +72,7 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
   const subtotal = total.toFixed(2);
   const discount = discountTotal.toFixed(2); // Use the state variable for the discount
   //Tax need change by location
-  const tax = (total * 0.1).toFixed(2);
-  const estimateTotal = (
-    total +
-    parseFloat(tax) -
-    parseFloat(discount)
-  ).toFixed(2);
+  const estimateTotal = (total + tax - parseFloat(discount)).toFixed(2);
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex justify-end transition-opacity">
