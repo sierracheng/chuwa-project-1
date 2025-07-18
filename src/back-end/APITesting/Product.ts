@@ -119,10 +119,10 @@ export async function applyCouponAPI(couponCode: string, price: number) {
       success: true,
       data: response.data,
     };
-  } catch (error) {
+  } catch (error: any) {
     return {
       success: false,
-      error,
+      error: error?.response?.data || { message: error.message },
     };
   }
 }

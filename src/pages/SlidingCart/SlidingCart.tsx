@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
-import { applyCouponAPI } from "../../back-end/APITesting/Product";
+// import { applyCouponAPI } from "../../back-end/APITesting/Product";
+import { applyCouponThunk } from "../../features/cart/couponThunk";
 import {
   selectProductsInCart,
   selectTotal,
@@ -22,7 +23,8 @@ interface SlidingCartProps {
 }
 export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
   const [tax, setTax] = useState(0);
-  const [couponCode, setCouponCode] = useState("");
+  const couponCode = useAppSelector((state) => state.coupon.couponCode);
+  const [inputCouponCode, setInputCouponCode] = useState("");
   const [discountTotal, setDiscountTotal] = useState(0);
   const productsInCart = useSelector(selectProductsInCart);
   const total = useSelector(selectTotal);
@@ -65,19 +67,38 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
     fetchCity();
   }, [dispatch, latitude, longitude, location, total]);
 
+    /**
+     * Handle Apply Coupon
+     */
+    useEffect(() => {   
+        if (couponCode) {
+            // console.log("Applying coupon code:", couponCode, "with total:", total);
+            dispatch(applyCouponThunk({ couponCode, total }))
+            .unwrap()
+            .then ((res) => {
+                setDiscountTotal(res.discountTotal);
+            })
+            .catch(() => {
+                console.warn("Failed to update discount total");
+            });
+        }
+    }, [couponCode, dispatch, total]);
+
   const handleApplyCoupon = async () => {
-    if (couponCode.trim() === "") {
+    if (inputCouponCode.trim() === "") {
       alert("Please enter a valid coupon code");
       return;
     }
-    const res = await applyCouponAPI(couponCode, total);
-    if (res.success) {
-      setDiscountTotal(res.data.discounts);
+    const res = await dispatch(
+      applyCouponThunk({ couponCode: inputCouponCode.trim(), total })
+    );
+    if (applyCouponThunk.fulfilled.match(res)) {
+      setDiscountTotal(res.payload.discountTotal);
       alert("Coupon applied successfully!");
     } else {
       alert("Failed to apply coupon. Please try again.");
     }
-    setCouponCode("");
+    setInputCouponCode("");
   };
 
   const subtotal = total.toFixed(2);
@@ -193,7 +214,7 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
               type="text"
               placeholder="Enter discount code"
               className="border border-gray-300 px-3 py-2 rounded flex-1"
-              onChange={(e) => setCouponCode(e.target.value)}
+              onChange={(e) => setInputCouponCode(e.target.value)}
             />
             <button
               onClick={() => handleApplyCoupon()}

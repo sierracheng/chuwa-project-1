@@ -15,11 +15,13 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 import authenticateReducer from '../features/authenticate/authenticate';
 import productsReducer from '../features/products/productSlice';
 import cartReducer from '../features/cart/cartSlice';
+import couponReducer from '../features/cart/couponSlice';
 
 const rootReducer = combineReducers({
   authenticate: authenticateReducer,
   products: productsReducer,
   cart: cartReducer,
+  coupon: couponReducer,
 });
 
 const persistConfig = {
