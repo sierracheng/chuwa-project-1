@@ -44,6 +44,7 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
       );
       const data = await res.json();
       dispatch(setLocation(data.address.city));
+      console.log(location);
       const taxRate = cityTaxMap.get(location) || 0;
       setTax(Number((total * taxRate).toFixed(2)));
     };
