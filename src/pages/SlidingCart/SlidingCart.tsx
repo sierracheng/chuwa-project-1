@@ -77,18 +77,24 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
     setInputCouponCode("");
   };
 
+  /**
+   * Handle after user applied coupon.
+   * if user still add items in the cart, coupon discount should be updated
+   */
   useEffect(() => {
     if (discountTotal === 0) return;
     dispatch(applyCouponThunk({ couponCode, total }));
   }, [dispatch, couponCode, total, discountTotal]);
 
+  /**
+   * Handle when there is no item in the cart, should clear the coupon discount
+   */
   useEffect(() => {
     if (totalItems > 0) return;
     dispatch(resetCoupon());
   }, [dispatch, totalItems]);
 
   const tax = useMemo(() => computeTax(total, location), [total, location]);
-
   const subtotal = total.toFixed(2);
   const discount = discountTotal.toFixed(2); // Use the state variable for the discount
   //Tax need change by location
