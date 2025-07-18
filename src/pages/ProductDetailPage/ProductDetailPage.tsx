@@ -108,20 +108,26 @@ export const ProductDetailPage: React.FC = () => {
                                         }))
                                     }}></ProductButton>
                                 ) : (
-                                    <div className="text-white w-[133px] h-[40px] bg-[#5d30ff] flex items-center justify-center">
-                                        <ProductButton buttonText="-" handleClick={() => {
+                                    <div className="text-white w-[133px] h-[40px] bg-[#5d30ff] flex items-center justify-center px-2">
+                                        <ProductButton 
+                                        className="w-1/3 h-full flex items-center justify-center"
+                                        buttonText="-" handleClick={() => {
                                             dispatch(decrement({
                                                 id: product._id
                                             }))
                                         }}></ProductButton>
                                         <QuantityInput
                                             value={qty}
+                                            className="w-1/3 h-full bg-transparent"
                                             onChange={(newQty) =>
                                                 dispatch(setQuantity({ id: product._id, quantity: newQty }))
                                             }
                                         />
                                         {/* <span className="px-4 py-2">{productsInCart[product._id].quantity}</span> */}
-                                        <ProductButton buttonText="+" handleClick={() => {
+                                        <ProductButton 
+                                        className="w-1/3 h-full flex items-center justify-center"
+                                        buttonText="+" 
+                                        handleClick={() => {
                                             dispatch(increment({
                                                 id: product._id,
                                                 price: product.price,

@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import type { IProduct } from "../back-end/models/Product";
-import { increment, decrement } from "../features/cart/cartSlice";
+import { increment, decrement, setQuantity } from "../features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { ProductButton, QuantityInput } from "../components";
 import React from "react";
 
 interface Props {
@@ -40,8 +41,10 @@ const ItemCard = ({ product }: Props) => {
         <div className="text-lg font-bold py-1">${product.price}</div>
         <div className="flex flex-col min-[1771px]:flex-row justify-between gap-1 w-full">
           {!productsInCart[id] || productsInCart[id].quantity === 0 ? (
-            <button
-              onClick={() =>
+            <ProductButton
+              buttonText="Add"
+              className="!flex-1 text-whit !h-auto"
+              handleClick={() =>
                 dispatch(
                   increment({
                     id: id,
@@ -51,36 +54,29 @@ const ItemCard = ({ product }: Props) => {
                   })
                 )
               }
-              className="text-white !flex-1"
             >
-              Add
-            </button>
+            </ProductButton>
           ) : (
-            <div className="flex flex-row  flex-wrap justify-between items-center flex-1 border rounded border-gray-300 bg-[#5d30ff] text-white px-2">
-              <button
-                onClick={() => dispatch(decrement({ id: id }))}
-                className="flex-1 min-w-0 bg-[#5d30ff] text-white py-1 text-sm"
-              >
-                -
-              </button>
-              <span className="flex flex-row items-center justify-between  min-w-0  bg-[#5d30ff] text-white px-2">
-                {productsInCart[id].quantity}
-              </span>
-              <button
-                onClick={() =>
-                  dispatch(
-                    increment({
-                      id: id,
-                      name: product.name,
-                      price: product.price,
-                      imageUrl: product.imageUrl,
-                    })
-                  )
-                }
-                className="flex-1 min-w-0 bg-[#5d30ff] text-white py-1 text-sm "
-              >
-                +
-              </button>
+            <div className="flex flex-row  flex-wrap justify-between items-center flex-1 border rounded border-gray-300 bg-[#5d30ff] text-white px-4">
+              <ProductButton
+                buttonText="-"
+                className="!flex-1 min-w-0 bg-[#5d30ff]"
+                handleClick={() => dispatch(decrement({ id: id }))}
+              />
+              <QuantityInput
+                value={productsInCart[id].quantity}
+                onChange={(newQty) => {
+                  if (newQty >= 0) {
+                    dispatch(setQuantity({ id: id, quantity: newQty }));
+                  }
+                }}
+                className="!flex-1 min-w-0 bg-[#5d30ff] text-white text-center"
+              />
+              <ProductButton
+                buttonText="+"
+                className="!flex-1 min-w-0 bg-[#5d30ff]"
+                handleClick={() => dispatch(increment({ id: id, name: product.name, price: product.price, imageUrl: product.imageUrl }))}
+              />
             </div>
           )}
           {role === "Admin" && (
