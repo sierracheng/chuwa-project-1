@@ -103,7 +103,8 @@ export const ProductDetailPage: React.FC = () => {
                                         dispatch(increment({
                                             id: product._id,
                                             price: product.price,
-                                            name: ""
+                                            name: product.name,
+                                            imageUrl: product.imageUrl,
                                         }))
                                     }}></ProductButton>
                                 ) : (
@@ -122,8 +123,10 @@ export const ProductDetailPage: React.FC = () => {
                                         {/* <span className="px-4 py-2">{productsInCart[product._id].quantity}</span> */}
                                         <ProductButton buttonText="+" handleClick={() => {
                                             dispatch(increment({
-                                                id: product._id, price: product.price,
-                                                name: ""
+                                                id: product._id,
+                                                price: product.price,
+                                                name: product.name,
+                                                imageUrl: product.imageUrl,
                                             }))
                                         }}></ProductButton>
                                     </div>)
