@@ -8,6 +8,7 @@ import { logoutUser } from "../back-end/APITesting/Auth";
 import { Link, useNavigate } from "react-router-dom";
 import { icons } from "../constants/icons";
 import { clearCart } from "../features/cart/cartSlice";
+import { resetCoupon } from "../features/cart/couponSlice";
 // import "./AuthButton.css";
 
 /**
@@ -26,6 +27,7 @@ const AuthButton = () => {
     dispatch(setIsLogin(false));
     dispatch(setRole(""));
     dispatch(clearCart());
+    dispatch(resetCoupon());
     navigate("/login");
   };
 
