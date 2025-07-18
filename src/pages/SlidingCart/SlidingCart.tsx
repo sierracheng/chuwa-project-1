@@ -9,11 +9,14 @@ import {
   decrement,
   removeFromCart,
   clearCart,
+  setQuantity,
 } from "../../features/cart/cartSlice";
 import { icons } from "../../constants/icons";
 import { setLocation } from "../../features/authenticate/authenticate";
 import { useAppSelector } from "../../app/hooks";
 import { cityTaxMap } from "../../utils/taxMap";
+import { QuantityInput } from "../../components";
+import { set } from "mongoose";
 
 interface SlidingCartProps {
   onClose: () => void;
@@ -139,7 +142,18 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
                   >
                     -
                   </button>
-                  <span className="w-8 text-center">{item.quantity}</span>
+                    <QuantityInput
+                        value={item.quantity}
+                        onChange={(newQty) =>
+                        dispatch(
+                            setQuantity({
+                              id: item.id,
+                              quantity: newQty,
+                            })
+                        )
+                        }
+                        className="w-12 h-8 text-center border border-gray-300 rounded"
+                  />
                   <button
                     onClick={() =>
                       dispatch(
