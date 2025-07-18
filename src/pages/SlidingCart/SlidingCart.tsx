@@ -36,17 +36,29 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
    */
   useEffect(() => {
     if (!latitude || !longitude || !location) {
+      console.error(
+        "latitude: ",
+        latitude,
+        "  longtitude: ",
+        longitude,
+        "  location: ",
+        location
+      );
       return;
     }
     const fetchCity = async () => {
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-      );
-      const data = await res.json();
-      dispatch(setLocation(data.address.city));
-      console.log(location);
-      const taxRate = cityTaxMap.get(location) || 0;
-      setTax(Number((total * taxRate).toFixed(2)));
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+        );
+        const data = await res.json();
+        dispatch(setLocation(data.address.city));
+        console.log(location);
+        const taxRate = cityTaxMap.get(location) || 0;
+        setTax(Number((total * taxRate).toFixed(2)));
+      } catch (error) {
+        console.error("fetch city error: ", error);
+      }
     };
 
     fetchCity();
