@@ -1,4 +1,4 @@
-import React, { useState, useEffect, type ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, ProductButton, QuantityInput } from "../../components/";
 import "./ProductDetailPage.css";
@@ -59,13 +59,6 @@ export const ProductDetailPage: React.FC = () => {
   };
 
   const qty = product ? productsInCart[product._id]?.quantity || 0 : 0;
-
-  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && product) {
-      dispatch(setQuantity({ id: product._id, quantity: value }));
-    }
-  };
 
   if (loading) return <p>Loading product…</p>;
   if (error || !product) return <p>{error ?? "Product not found."}</p>;
