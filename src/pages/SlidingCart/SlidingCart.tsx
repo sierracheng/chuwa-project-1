@@ -16,7 +16,6 @@ import { setLocation } from "../../features/authenticate/authenticate";
 import { useAppSelector } from "../../app/hooks";
 import { cityTaxMap } from "../../utils/taxMap";
 import { QuantityInput } from "../../components";
-import { set } from "mongoose";
 
 interface SlidingCartProps {
   onClose: () => void;
@@ -56,7 +55,6 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
         );
         const data = await res.json();
         dispatch(setLocation(data.address.city));
-        console.log(location);
         const taxRate = cityTaxMap.get(location) || 0;
         setTax(Number((total * taxRate).toFixed(2)));
       } catch (error) {
@@ -142,17 +140,17 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
                   >
                     -
                   </button>
-                    <QuantityInput
-                        value={item.quantity}
-                        onChange={(newQty) =>
-                        dispatch(
-                            setQuantity({
-                              id: item.id,
-                              quantity: newQty,
-                            })
-                        )
-                        }
-                        className="w-12 h-8 text-center border border-gray-300 rounded"
+                  <QuantityInput
+                    value={item.quantity}
+                    onChange={(newQty) =>
+                      dispatch(
+                        setQuantity({
+                          id: item.id,
+                          quantity: newQty,
+                        })
+                      )
+                    }
+                    className="w-12 h-8 text-center border border-gray-300 rounded"
                   />
                   <button
                     onClick={() =>
