@@ -75,7 +75,9 @@ export async function createProductAPI(
       category,
       price,
       stock,
-      imageUrl: imageUrl ? imageUrl.trim() : undefined,
+      imageUrl: imageUrl
+        ? imageUrl.trim()
+        : "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone11-select-2019-family?wid=882&hei=1058&fmt=jpeg&qlt=90&.v=1567022175704",
     });
     return {
       success: true,
