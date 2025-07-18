@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "../../components";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utils/regex";
 import "./LoginPage.css";
-import { findUserAPI } from "../../back-end/APITesting/User";
 import { useAppDispatch } from "../../app/hooks";
-import { setIsLogin, setRole } from "../../features/authenticate/authenticate";
-import { loginUser } from "../../back-end/APITesting/Auth";
+import { loginThunk } from "../../features/authenticate/loginThunk";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -48,16 +46,12 @@ export function LoginPage() {
     if (!emailOK || !passwordOK) {
       return;
     }
-    const response = await findUserAPI(email);
+    const res = await dispatch(loginThunk({ email, password }));
 
-    if (response.success) {
-      dispatch(setIsLogin(true));
-      dispatch(setRole(response.data.user.role));
-      const res = await loginUser(email, password);
-      console.log(res);
+    if (loginThunk.fulfilled.match(res)) {
       navigate("/");
     } else {
-      setEmailError("User not found");
+      setEmailError(res.payload as string || "Login failed");
     }
   };
 
