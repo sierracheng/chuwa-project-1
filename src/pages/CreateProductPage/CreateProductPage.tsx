@@ -87,6 +87,7 @@ export const CreateProductPage: React.FC = () => {
                         <label>Price</label>
                         <input
                             type='number'
+                            step='0.01'
                             value={productPrice}
                             onChange={(e) => setProductPrice(e.target.value)}
                             min='0'
