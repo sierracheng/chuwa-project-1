@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import type { AppDispatch } from "../../app/store";
-// import { applyCouponAPI } from "../../back-end/APITesting/Product";
+import { useSelector } from "react-redux";
+
 import { applyCouponThunk } from "../../features/cart/couponThunk";
 import {
   selectProductsInCart,
@@ -14,20 +13,23 @@ import {
 } from "../../features/cart/cartSlice";
 import { icons } from "../../constants/icons";
 import { setLocation } from "../../features/authenticate/authenticate";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { computeTax } from "../../utils/taxMap";
 import { QuantityInput } from "../../components";
+import { resetCoupon, setDiscountTotal } from "../../features/cart/couponSlice";
 
 interface SlidingCartProps {
   onClose: () => void;
 }
 export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
+  // Redux State
+  const dispatch = useAppDispatch();
   const couponCode = useAppSelector((state) => state.coupon.couponCode);
+  const discountTotal = useAppSelector((state) => state.coupon.discountTotal);
+
   const [inputCouponCode, setInputCouponCode] = useState("");
-  const [discountTotal, setDiscountTotal] = useState(0);
   const productsInCart = useSelector(selectProductsInCart);
   const total = useSelector(selectTotal);
-  const dispatch = useDispatch<AppDispatch>();
   const cartItems = Object.values(productsInCart);
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const latitude = localStorage.getItem("lat");
@@ -58,23 +60,6 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
     fetchCity();
   }, [dispatch, latitude, longitude]);
 
-  /**
-   * Handle Apply Coupon
-   */
-  useEffect(() => {
-    if (couponCode) {
-      // console.log("Applying coupon code:", couponCode, "with total:", total);
-      dispatch(applyCouponThunk({ couponCode, total }))
-        .unwrap()
-        .then((res) => {
-          setDiscountTotal(res.discountTotal);
-        })
-        .catch(() => {
-          console.warn("Failed to update discount total");
-        });
-    }
-  }, [couponCode, dispatch, total]);
-
   const handleApplyCoupon = async () => {
     if (inputCouponCode.trim() === "") {
       alert("Please enter a valid coupon code");
@@ -84,13 +69,23 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
       applyCouponThunk({ couponCode: inputCouponCode.trim(), total })
     );
     if (applyCouponThunk.fulfilled.match(res)) {
-      setDiscountTotal(res.payload.discountTotal);
+      dispatch(setDiscountTotal(res.payload.discountTotal));
       alert("Coupon applied successfully!");
     } else {
       alert("Failed to apply coupon. Please try again.");
     }
     setInputCouponCode("");
   };
+
+  useEffect(() => {
+    if (discountTotal === 0) return;
+    dispatch(applyCouponThunk({ couponCode, total }));
+  }, [dispatch, couponCode, total, discountTotal]);
+
+  useEffect(() => {
+    if (totalItems > 0) return;
+    dispatch(resetCoupon());
+  }, [dispatch, totalItems]);
 
   const tax = useMemo(() => computeTax(total, location), [total, location]);
 
@@ -112,7 +107,10 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
           <div className="flex items-center space-x-1">
             <button
               className="text-white !bg-transparent hover:underline text-sm"
-              onClick={() => dispatch(clearCart())}
+              onClick={() => {
+                dispatch(clearCart());
+                dispatch(resetCoupon());
+              }}
             >
               Clear Cart
             </button>
@@ -189,7 +187,9 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
                   ${item.price.toFixed(2)}
                 </p>
                 <button
-                  onClick={() => dispatch(removeFromCart({ id: item.id }))}
+                  onClick={() => {
+                    dispatch(removeFromCart({ id: item.id }));
+                  }}
                   className="text-gray-500 underline !bg-transparent hover:text-gray-800 transition-colors text-sm"
                 >
                   Remove
@@ -202,7 +202,7 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
         {/* Discount code */}
         <div className="p-4">
           <h3 className="font-semibold mb-2">Apply Discount Code</h3>
-          <div className="flex space-x-2">
+          <div className="flex flex-row items-center justify-between space-x-2">
             <input
               type="text"
               placeholder="Enter discount code"
@@ -210,8 +210,9 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
               onChange={(e) => setInputCouponCode(e.target.value)}
             />
             <button
+              disabled={!inputCouponCode.trim()}
               onClick={() => handleApplyCoupon()}
-              className="bg-blue-600 text-white p-2 rounded mt-2"
+              className="!items-center !justify-between bg-blue-600 text-white p-2 rounded disabled:opacity-60 disabled:cursor-not-allowed"
             >
               Apply
             </button>
