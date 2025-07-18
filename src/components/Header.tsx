@@ -55,7 +55,7 @@ const Header = () => {
                   onClick={() => dispatch(openCart())}
                 >
                   {icons.CART}
-                  <span className="cart-amount">${total}.toFixed(2)</span>
+                  <span className="cart-amount">${(Math.abs(total)).toFixed(2)}</span>
                 </button>
               </div>
             </div>
@@ -108,7 +108,7 @@ const Header = () => {
               >
                 {icons.CART}
                 <span className="cart-amount">
-                  ${Math.abs(total).toFixed(2)}
+                  ${(Math.abs(total)).toFixed(2)}
                 </span>
               </button>
             </div>

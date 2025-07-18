@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { AppDispatch } from "../../app/store";
-import { applyCouponThunk } from "../../features/cart/couponThunk";
+import { applyCouponAPI } from "../../back-end/APITesting/Product";
 import {
   selectProductsInCart,
   selectTotal,
@@ -56,12 +56,9 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
       alert("Please enter a valid coupon code");
       return;
     }
-    const res = await dispatch(
-      applyCouponThunk({ CouponCode: couponCode, price: total })
-    );
-    if (res.meta.requestStatus === "fulfilled") {
-      // console.log('Coupon applied:', res.payload);
-      setDiscountTotal(res.payload);
+    const res = await applyCouponAPI(couponCode, total);
+    if (res.success) {
+      setDiscountTotal(res.data.discounts);
       alert("Coupon applied successfully!");
     } else {
       alert("Failed to apply coupon. Please try again.");
@@ -195,7 +192,7 @@ export const SlidingCart: React.FC<SlidingCartProps> = ({ onClose }) => {
             </div>
             <div className="flex justify-between">
               <span>Discount</span>
-              <span>${discount}</span>
+              <span>{parseInt(discount) === 0 ? `$0` : `-$${discount}`}</span>
             </div>
             <div className="flex justify-between">
               <span>Estimate Total</span>
