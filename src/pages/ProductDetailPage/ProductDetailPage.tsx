@@ -109,8 +109,9 @@ export const ProductDetailPage: React.FC = () => {
                     }}
                   ></ProductButton>
                 ) : (
-                  <div className="text-white w-[133px] h-[40px] bg-[#5d30ff] flex items-center justify-center">
+                  <div className="text-white w-[133px] h-[40px] bg-[#5d30ff] flex items-center justify-center px-2">
                     <ProductButton
+                      className="w-1/3 h-full flex items-center justify-center"
                       buttonText="-"
                       handleClick={() => {
                         dispatch(
@@ -122,6 +123,7 @@ export const ProductDetailPage: React.FC = () => {
                     ></ProductButton>
                     <QuantityInput
                       value={qty}
+                      className="w-1/3 h-full bg-transparent"
                       onChange={(newQty) =>
                         dispatch(
                           setQuantity({ id: product._id, quantity: newQty })
@@ -130,6 +132,7 @@ export const ProductDetailPage: React.FC = () => {
                     />
                     {/* <span className="px-4 py-2">{productsInCart[product._id].quantity}</span> */}
                     <ProductButton
+                      className="w-1/3 h-full flex items-center justify-center"
                       buttonText="+"
                       handleClick={() => {
                         dispatch(
