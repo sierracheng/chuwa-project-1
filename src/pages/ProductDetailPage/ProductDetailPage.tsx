@@ -89,7 +89,7 @@ export const ProductDetailPage: React.FC = () => {
                             <div className="flex flex-row gap-5 min-[826px]:w-3/4 mt-6">
                                 {!productsInCart[product._id] || qty === 0 ? (
                                     <ProductButton
-                                        className="text-white w-1/2"
+                                        className="w-1/2"
                                         buttonText="Add to Cart"
                                         handleClick={() => {
                                             dispatch(
@@ -143,7 +143,7 @@ export const ProductDetailPage: React.FC = () => {
                                 )}
                                 {role === "Admin" && (
                                     <ProductButton
-                                        className="w-1/2 !bg-white !border !border-gray-300 text-grey-600"
+                                        className="w-1/2 !bg-white !border !border-gray-300 !text-gray-600"
                                         buttonText="Edit"
                                         handleClick={handleEditOnClick}
                                     ></ProductButton>
