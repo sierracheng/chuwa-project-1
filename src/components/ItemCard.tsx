@@ -43,7 +43,7 @@ const ItemCard = ({ product }: Props) => {
           {!productsInCart[id] || productsInCart[id].quantity === 0 ? (
             <ProductButton
               buttonText="Add"
-              className="!flex-1 text-whit !h-auto"
+              className="!flex-1 text-white !h-auto"
               handleClick={() =>
                 dispatch(
                   increment({
@@ -54,8 +54,7 @@ const ItemCard = ({ product }: Props) => {
                   })
                 )
               }
-            >
-            </ProductButton>
+            ></ProductButton>
           ) : (
             <div className="flex flex-row  flex-wrap justify-between items-center flex-1 border rounded border-gray-300 bg-[#5d30ff] text-white px-4">
               <ProductButton
@@ -75,12 +74,24 @@ const ItemCard = ({ product }: Props) => {
               <ProductButton
                 buttonText="+"
                 className="!flex-1 min-w-0 bg-[#5d30ff]"
-                handleClick={() => dispatch(increment({ id: id, name: product.name, price: product.price, imageUrl: product.imageUrl }))}
+                handleClick={() =>
+                  dispatch(
+                    increment({
+                      id: id,
+                      name: product.name,
+                      price: product.price,
+                      imageUrl: product.imageUrl,
+                    })
+                  )
+                }
               />
             </div>
           )}
           {role === "Admin" && (
-            <button onClick={handleEditOnClick} className="!bg-white !border !border-gray-300 !flex-1">
+            <button
+              onClick={handleEditOnClick}
+              className="!bg-white !border !border-gray-300 !flex-1"
+            >
               Edit
             </button>
           )}

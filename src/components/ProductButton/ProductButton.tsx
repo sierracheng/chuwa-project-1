@@ -14,7 +14,7 @@ export const ProductButton: React.FC<ProductButtonProps> = ({
   customStyle,
   className = '',
 }) => (
-  <button onClick={handleClick} className={`text-white h-[40px] flex items-center justify-center ${className}`} style={customStyle}>
+  <button onClick={handleClick} className={`text-sm text-white h-[40px] flex items-center justify-center ${className} `} style={customStyle}>
     {buttonText}
   </button>
 );
