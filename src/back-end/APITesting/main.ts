@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { IProduct } from "../models/Product";
-import { getAllProductAPI, updateProductAPI, createProductAPI, applyCouponAPI } from "./Product";
+import {
+  getAllProductAPI,
+  updateProductAPI,
+  createProductAPI,
+  applyCouponAPI,
+} from "./Product";
 import {
   createUserAPI,
   getUserRoleAPI,
@@ -13,8 +18,8 @@ import test from "node:test";
 
 async function testCreateUserAPI() {
   const ret = await createUserAPI({
-    email: "zgeming@seas.upenn.edu",
-    password: "Aa1234567890",
+    email: "Admin2@gmail.com",
+    password: "Aa123456789",
     role: "Admin",
   });
 
@@ -58,7 +63,7 @@ async function testfindUserAPI() {
 
 async function testUpdateProductAPI() {
   const updateData = {
-   name: "Happy face 2.0",
+    name: "Happy face 2.0",
     description: "Still happy, but upgraded!",
     category: "Electronics",
     price: 99.99,
@@ -119,14 +124,14 @@ async function testApplyCouponAPI() {
 }
 
 async function main() {
-  // testCreateUserAPI();
+  testCreateUserAPI();
   // testGetUserRoleAPI();
   // testPostForgotPasswordAPI();
   // testfindUserAPI();
   // testCreateProductAPI();
   // testGetAllProductAPI();
   // testUpdateProductAPI();
-  testApplyCouponAPI();
+  // testApplyCouponAPI();
 }
 
 main().catch((err) => console.error(err));

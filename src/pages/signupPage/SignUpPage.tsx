@@ -41,7 +41,7 @@ export function SignUpPage() {
     return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const emailOK = validateEmail(email);
@@ -58,14 +58,16 @@ export function SignUpPage() {
     };
 
     try {
-      const response = createUserAPI(userData);
-      console.log(response);
-
-      setSignupSuccess(true);
-
-      setTimeout(() => {
-        navigate("/login");
-      }, 5000);
+      const response = await createUserAPI(userData);
+      console.log(response.success);
+      if (response.success) {
+        setSignupSuccess(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      } else {
+        alert("Email has been used.");
+      }
     } catch (error) {
       console.error("Error creating user:", error);
     }

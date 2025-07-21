@@ -69,7 +69,11 @@ export async function forgotPasswordAPI(email: string) {
   }
 }
 
-export async function updatePasswordAPI(email: string, newPassword: string, token: string) {
+export async function updatePasswordAPI(
+  email: string,
+  newPassword: string,
+  token: string
+) {
   try {
     const response = await axios.put(`http://localhost:3003/update-password`, {
       email,
@@ -80,11 +84,11 @@ export async function updatePasswordAPI(email: string, newPassword: string, toke
       success: true,
       data: response.data,
     };
-  } catch (error: any) {
-    console.error('Error updating password:', error);
+  } catch (error) {
+    console.error("Error updating password:", error);
     return {
       success: false,
-      error: 'Error updating password: ' + error.message,
+      error: "Error updating password: " + error,
     };
   }
 }
